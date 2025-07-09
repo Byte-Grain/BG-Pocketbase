@@ -122,7 +122,7 @@ table {
         white-space: nowrap;
     }
     .col-type-action {
-        @extend %minColWidth;
+        @extend %minColWidth !optional;
         white-space: nowrap;
         text-align: right;
         color: var(--txtHintColor);
@@ -162,7 +162,7 @@ table {
     td.col-field-username,
     .col-field-created,
     .col-field-updated {
-        @extend %minColWidth;
+        @extend %minColWidth !optional;
     }
     td.col-field-id {
         width: 175px;

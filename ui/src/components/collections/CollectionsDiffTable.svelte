@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import CommonHelper from "@/utils/CommonHelper";
 
     export let collectionA = {};

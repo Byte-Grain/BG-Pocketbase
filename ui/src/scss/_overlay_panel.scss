@@ -1,3 +1,5 @@
+@use "mixins";
+
 .overlay-panel {
     $padding: var(--baseSpacing);
     $compactPadding: calc(#{$padding} - 7px);
@@ -13,7 +15,7 @@
     width: 580px;
     max-width: 100%;
     word-wrap: break-word;
-    @include shadowize();
+    @include mixins.shadowize();
 
     .overlay-panel-section {
         position: relative;
@@ -107,7 +109,7 @@
 
     // content
     .panel-content {
-        @extend .content;
+        @extend .content !optional;
         z-index: auto; // not fixed to allow overlapping
         flex-grow: 1;
         overflow-x: hidden;

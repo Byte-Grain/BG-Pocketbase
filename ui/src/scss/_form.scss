@@ -1,3 +1,5 @@
+@use "mixins";
+
 @use "sass:math";
 
 button {
@@ -433,7 +435,7 @@ button {
     }
     &:focus,
     &:focus-within {
-        @include scrollbar(
+        @include mixins.scrollbar(
             $thumbColor: var(--baseAlt3Color),
             $thumbActiveColor: var(--baseAlt4Color)
         );
@@ -462,7 +464,7 @@ button {
 input,
 select,
 textarea {
-    @extend %input;
+    @extend %input !optional;
 }
 input {
     // Safari and GNOME Web has a default height and ignores the min-height
@@ -613,7 +615,7 @@ select {
 
     // hints
     .help-block {
-        @extend .content;
+        @extend .content !optional;
         position: relative;
         margin-top: 8px;
         font-size: var(--smFontSize);
@@ -781,7 +783,7 @@ select {
     }
 
     .form-field-block {
-        @extend %block;
+        @extend %block !optional;
         position: relative;
         margin: 0 0 var(--xsSpacing);
 
@@ -862,7 +864,7 @@ select {
                     transition: left var(--activeAnimationSpeed),
                                 transform var(--activeAnimationSpeed),
                                 background var(--activeAnimationSpeed);
-                    @include shadowize();
+                    @include mixins.shadowize();
                 }
 
                 &:active:before {
@@ -1010,7 +1012,7 @@ select {
     }
 
     .selected-container {
-        @extend %input;
+        @extend %input !optional;
         position: relative;
         display: flex;
         flex-wrap: wrap;
@@ -1157,7 +1159,7 @@ select {
 
     // dropdown
     .txt-missing {
-        @extend %block;
+        @extend %block !optional;
         color: var(--txtHintColor);
         padding: 5px 12px;
         margin: 0;
@@ -1170,7 +1172,7 @@ select {
         border-top-left-radius: 0;
         border-top-right-radius: 0;
         margin-top: -2px;
-        @include shadowize(inset 0 0 0 2px var(--baseAlt2Color));
+        @include mixins.shadowize(inset 0 0 0 2px var(--baseAlt2Color));
 
         .input-group:focus-within {
             box-shadow: none;
@@ -1240,7 +1242,7 @@ select {
         &.multiple .selected-container {
             .option {
                 width: 100%;
-                @include shadowize();
+                @include mixins.shadowize();
             }
         }
     }
@@ -1356,7 +1358,7 @@ select {
 
 // codemirror field
 .code-editor {
-    @extend %input;
+    @extend %input !optional;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -1377,7 +1379,7 @@ select {
         }
 
         .cm-tooltip-autocomplete {
-            @include shadowize();
+            @include mixins.shadowize();
             border-radius: var(--baseRadius);
             background: var(--baseColor);
             border: 0;
@@ -1442,7 +1444,7 @@ select {
 
 // tinymce field
 .tinymce-wrapper {
-    @extend %input;
+    @extend %input !optional;
     min-height: 277px;
 
     .tox-tinymce {
@@ -1505,7 +1507,7 @@ body {
     }
 
     .tox .tox-toolbar-overlord {
-        @include shadowize();
+        @include mixins.shadowize();
     }
 
     .tox .tox-listboxfield .tox-listbox--select,

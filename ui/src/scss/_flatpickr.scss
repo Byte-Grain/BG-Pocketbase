@@ -1,3 +1,5 @@
+@use "mixins";
+
 // slightly modified version of https://npmcdn.com/flatpickr@4.6.9/dist/flatpickr.css
 .flatpickr-calendar {
   opacity: 0;
@@ -17,7 +19,7 @@
   color: var(--txtPrimaryColor);
   background: var(--baseColor);
   border-radius: var(--baseRadius);
-  @include shadowize(0px 0px 0px 1px var(--baseAlt2Color));
+  @include mixins.shadowize(0px 0px 0px 1px var(--baseAlt2Color));
   input, select {
     box-shadow: none;
     min-height: 0;
@@ -726,7 +728,7 @@ span.flatpickr-weekday {
 }
 
 .flatpickr-inline-container {
-  @extend %block;
+  @extend %block !optional;
   .flatpickr-input {
     display: none;
   }

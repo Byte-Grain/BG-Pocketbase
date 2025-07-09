@@ -1,8 +1,10 @@
+@use "mixins";
+
 .accordion {
     $handlerSize: 25px;
     $spacing: 20px;
 
-    @extend %block;
+    @extend %block !optional;
     outline: 0;
     position: relative;
     border-radius: var(--baseRadius);
@@ -71,7 +73,7 @@
 
     // content
     .accordion-content {
-        @extend %block;
+        @extend %block !optional;
         padding: $spacing;
     }
 
@@ -90,7 +92,7 @@
         }
     }
     &.active {
-        @include shadowize();
+        @include mixins.shadowize();
         .accordion-header {
             position: relative;
             top: 0;

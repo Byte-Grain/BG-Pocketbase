@@ -117,7 +117,7 @@ $tabContentAnimationSpeed: 0.2s;
 }
 
 .tabs-content {
-    @extend %block;
+    @extend %block !optional;
     position: relative;
     > .tab-item {
         width: 100%;
@@ -143,6 +143,6 @@ $tabContentAnimationSpeed: 0.2s;
 }
 
 .tabs {
-    @extend %block;
+    @extend %block !optional;
     position: relative;
 }
