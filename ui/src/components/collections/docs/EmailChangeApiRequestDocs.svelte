@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import CodeBlock from "@/components/base/CodeBlock.svelte";
 
     export let collection;
@@ -16,7 +17,7 @@
             body: `
                 {
                   "status": 400,
-                  "message": "An error occurred while validating the submitted data.",
+                  "message": "${$_("common.message.updateError")}",
                   "data": {
                     "newEmail": {
                       "code": "validation_required",
@@ -31,7 +32,7 @@
             body: `
                 {
                   "status": 401,
-                  "message": "The request requires valid record authorization token to be set.",
+                  "message": "${$_("common.message.noAccess")}",
                   "data": {}
                 }
             `,
@@ -41,7 +42,7 @@
             body: `
                 {
                   "status": 403,
-                  "message": "The authorized record model is not allowed to perform this action.",
+                  "message": "${$_("common.message.insufficientAuthority")}",
                   "data": {}
                 }
             `,
@@ -59,20 +60,20 @@
     <p class="txt-hint txt-sm txt-right">Requires <code>Authorization:TOKEN</code></p>
 </div>
 
-<div class="section-title">Body Parameters</div>
+<div class="section-title">{$_("common.placeholder.apiParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="50%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="50%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
                 <div class="inline-flex">
-                    <span class="label label-success">Required</span>
+                    <span class="label label-success">{$_("common.tip.required")}</span>
                     <span>newEmail</span>
                 </div>
             </td>
@@ -84,7 +85,7 @@
     </tbody>
 </table>
 
-<div class="section-title">Responses</div>
+<div class="section-title">{$_("common.placeholder.apiResponses")}</div>
 <div class="tabs">
     <div class="tabs-header compact combined left">
         {#each responses as response (response.code)}

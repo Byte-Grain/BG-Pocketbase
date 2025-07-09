@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { onDestroy } from "svelte";
     import tooltip from "@/actions/tooltip";
     import { collections } from "@/stores/collections";
@@ -208,7 +209,7 @@
             >
                 <i class="ri-magic-line" />
                 <!-- <i class="ri-layout-line" /> -->
-                <span class="txt">Open picker</span>
+                <span class="txt">{$_("common.action.openPicker")}</span>
             </button>
         </div>
     </div>

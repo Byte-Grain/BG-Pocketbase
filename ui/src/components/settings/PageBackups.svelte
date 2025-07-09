@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { slide } from "svelte/transition";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -15,7 +16,7 @@
     import S3Fields from "@/components/settings/S3Fields.svelte";
     import BackupUploadButton from "@/components/settings/BackupUploadButton.svelte";
 
-    $pageTitle = "Backups";
+    $pageTitle = $_("common.menu.backupConfig");
 
     let backupsListComponent;
     let originalFormSettings = {};
@@ -68,7 +69,7 @@
 
             init(settings);
 
-            addSuccessToast("Successfully saved application settings.");
+            addSuccessToast($_("common.message.applyNewSetting"));
         } catch (err) {
             ApiClient.error(err);
         }
@@ -101,7 +102,7 @@
 <PageWrapper>
     <header class="page-header">
         <nav class="breadcrumbs">
-            <div class="breadcrumb-item">Settings</div>
+            <div class="breadcrumb-item">{$_("common.menu.setting")}</div>
             <div class="breadcrumb-item">{$pageTitle}</div>
         </nav>
     </header>
@@ -109,8 +110,12 @@
     <div class="wrapper">
         <div class="panel" autocomplete="off" on:submit|preventDefault={save}>
             <div class="flex m-b-sm flex-gap-10">
-                <span class="txt-xl">Backup and restore your PocketBase data</span>
-                <RefreshButton class="btn-sm" tooltip={"Refresh"} on:refresh={refreshList} />
+                <span class="txt-xl">{$_("page.setting.content.backup.content.1")}</span>
+                <RefreshButton
+                    class="btn-sm"
+                    tooltip={$_("common.action.refresh")}
+                    on:refresh={refreshList}
+                />
                 <BackupUploadButton class="btn-sm" on:success={refreshList} />
             </div>
 
@@ -125,7 +130,7 @@
                 disabled={isLoading}
                 on:click={() => (showBackupsSettings = !showBackupsSettings)}
             >
-                <span class="txt">Backups options</span>
+                <span class="txt">{$_("page.setting.content.backup.action.moreBackupOption")}</span>
                 {#if showBackupsSettings}
                     <i class="ri-arrow-up-s-line" />
                 {:else}
@@ -142,7 +147,9 @@
                 >
                     <Field class="form-field form-field-toggle m-t-base m-b-0" let:uniqueId>
                         <input type="checkbox" id={uniqueId} bind:checked={enableAutoBackups} />
-                        <label for={uniqueId}>Enable auto backups</label>
+                        <label for={uniqueId}
+                            >{$_("page.setting.content.backup.action.enableAutoBackup")}</label
+                        >
                     </Field>
 
                     {#if enableAutoBackups}
@@ -150,7 +157,9 @@
                             <div class="grid p-t-base p-b-sm">
                                 <div class="col-lg-6">
                                     <Field class="form-field required" name="backups.cron" let:uniqueId>
-                                        <label for={uniqueId}>Cron expression</label>
+                                        <label for={uniqueId}
+                                            >{$_("page.setting.content.backup.cronExpression")}</label
+                                        >
                                         <!-- svelte-ignore a11y-autofocus -->
                                         <input
                                             required
@@ -163,7 +172,7 @@
                                         />
                                         <div class="form-field-addon">
                                             <button type="button" class="btn btn-sm btn-outline p-r-0">
-                                                <span class="txt">Presets</span>
+                                                <span class="txt">{$_("common.placeholder.preset")}</span>
                                                 <i class="ri-arrow-drop-down-fill" />
                                                 <Toggler class="dropdown dropdown-nowrap dropdown-right">
                                                     <button
@@ -173,7 +182,11 @@
                                                             formSettings.backups.cron = "0 0 * * *";
                                                         }}
                                                     >
-                                                        <span class="txt">Every day at 00:00h</span>
+                                                        <span class="txt"
+                                                            >{$_(
+                                                                "page.setting.content.backup.content.14",
+                                                            )}</span
+                                                        >
                                                     </button>
                                                     <button
                                                         type="button"
@@ -182,7 +195,11 @@
                                                             formSettings.backups.cron = "0 0 * * 0";
                                                         }}
                                                     >
-                                                        <span class="txt">Every sunday at 00:00h</span>
+                                                        <span class="txt"
+                                                            >{$_(
+                                                                "page.setting.content.backup.content.15",
+                                                            )}</span
+                                                        >
                                                     </button>
                                                     <button
                                                         type="button"
@@ -191,7 +208,11 @@
                                                             formSettings.backups.cron = "0 0 * * 1,3";
                                                         }}
                                                     >
-                                                        <span class="txt">Every Mon and Wed at 00:00h</span>
+                                                        <span class="txt"
+                                                            >{$_(
+                                                                "page.setting.content.backup.content.16",
+                                                            )}</span
+                                                        >
                                                     </button>
                                                     <button
                                                         type="button"
@@ -200,8 +221,8 @@
                                                             formSettings.backups.cron = "0 0 1 * *";
                                                         }}
                                                     >
-                                                        <span class="txt">
-                                                            Every first day of the month at 00:00h
+                                                        <span class="txt"
+                                                            >{$_("page.setting.content.backup.content.17")}
                                                         </span>
                                                     </button>
                                                 </Toggler>
@@ -210,13 +231,11 @@
                                         <div class="help-block">
                                             <!-- prettier-ignore -->
                                             <p>
-                                                Supports numeric list, steps, ranges or
+                                                {$_("page.setting.content.backup.content.7")}
                                                 <span
                                                     class="link-primary"
                                                     use:tooltip={"@yearly\n@annually\n@monthly\n@weekly\n@daily\n@midnight\n@hourly"}
-                                                >macros</span>.
-                                                <br>
-                                                The timezone is in UTC.
+                                                >{$_("common.placeholder.hoverToSee")}</span>
                                             </p>
                                         </div>
                                     </Field>
@@ -227,7 +246,9 @@
                                         name="backups.cronMaxKeep"
                                         let:uniqueId
                                     >
-                                        <label for={uniqueId}>Max @auto backups to keep</label>
+                                        <label for={uniqueId}
+                                            >{$_("page.setting.content.backup.maxBackupFilesNum")}</label
+                                        >
                                         <input
                                             type="number"
                                             id={uniqueId}
@@ -243,7 +264,7 @@
                     <div class="clearfix m-b-base" />
 
                     <S3Fields
-                        toggleLabel="Store backups in S3 storage"
+                        toggleLabel={$_("page.setting.content.backup.action.backupToS3")}
                         testFilesystem="backups"
                         configKey="backups.s3"
                         originalConfig={originalFormSettings.backups?.s3}
@@ -281,7 +302,7 @@
                                 disabled={!hasChanges || isSaving}
                                 on:click={() => reset()}
                             >
-                                <span class="txt">Reset</span>
+                                <span class="txt">{$_("common.action.reset")}</span>
                             </button>
                         {/if}
 
@@ -292,7 +313,7 @@
                             disabled={!hasChanges || isSaving}
                             on:click={() => save()}
                         >
-                            <span class="txt">Save changes</span>
+                            <span class="txt">{$_("common.action.save")}</span>
                         </button>
                     </div>
                 </form>

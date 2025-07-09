@@ -1,6 +1,7 @@
 <script>
     import "./scss/main.scss";
 
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Confirmation from "@/components/base/Confirmation.svelte";
     import TinyMCE from "@/components/base/TinyMCE.svelte";
@@ -16,19 +17,24 @@
     import active from "svelte-spa-router/active";
     import routes from "./routes";
 
+    // 初始化后端地址到Cookie以便支持用户自行切换
+    import { getCookie, setCookie } from "@/utils/Cookie";
+    let pbUrl = getCookie("pbUrl");
+    if (!pbUrl) {
+        setCookie("pbUrl", import.meta.env.PB_BACKEND_URL);
+    }
     let oldLocation = undefined;
 
     let showAppSidebar = false;
 
     let isTinyMCEPreloaded = false;
-
     $: if ($superuser?.id) {
         loadSettings();
     }
 
     function handleRouteLoading(e) {
         if (e?.detail?.location === oldLocation) {
-            return; // not an actual change
+            return;
         }
 
         showAppSidebar = !!e?.detail?.userData?.showAppSidebar;
@@ -69,27 +75,19 @@
 </script>
 
 <svelte:head>
-    <title>{CommonHelper.joinNonEmpty([$pageTitle, $appName, "PocketBase"], " - ")}</title>
+    <!-- 🐱 -->
+    <title>{CommonHelper.joinNonEmpty([$pageTitle, $appName], " - ")}</title>
 
     {#if window.location.protocol == "https:"}
-        <link
-            rel="shortcut icon"
-            type="image/png"
-            href="{import.meta.env.BASE_URL}images/favicon/favicon_prod.png"
-        />
+        <link rel="shortcut icon" type="image/png" href="/images/favicon/favicon_prod.png" />
     {/if}
 </svelte:head>
 
 <div class="app-layout">
     {#if $superuser?.id && showAppSidebar}
         <aside class="app-sidebar">
-            <a href="/" class="logo logo-sm" use:link>
-                <img
-                    src="{import.meta.env.BASE_URL}images/logo.svg"
-                    alt="PocketBase logo"
-                    width="40"
-                    height="40"
-                />
+            <a href="/" class="logo logo-xl" use:link>
+                <img src="/images/logo.svg" alt="PocketBase logo" width="40" height="40" />
             </a>
 
             <nav class="main-menu">
@@ -99,7 +97,10 @@
                     aria-label="Collections"
                     use:link
                     use:active={{ path: "/collections/?.*", className: "current-route" }}
-                    use:tooltip={{ text: "Collections", position: "right" }}
+                    use:tooltip={{
+                        text: $_("common.menu.collection"),
+                        position: "right",
+                    }}
                 >
                     <i class="ri-database-2-line" />
                 </a>
@@ -109,7 +110,10 @@
                     aria-label="Logs"
                     use:link
                     use:active={{ path: "/logs/?.*", className: "current-route" }}
-                    use:tooltip={{ text: "Logs", position: "right" }}
+                    use:tooltip={{
+                        text: $_("common.menu.log"),
+                        position: "right",
+                    }}
                 >
                     <i class="ri-line-chart-line" />
                 </a>
@@ -119,7 +123,10 @@
                     aria-label="Settings"
                     use:link
                     use:active={{ path: "/settings/?.*", className: "current-route" }}
-                    use:tooltip={{ text: "Settings", position: "right" }}
+                    use:tooltip={{
+                        text: $_("common.menu.setting"),
+                        position: "right",
+                    }}
                 >
                     <i class="ri-tools-line" />
                 </a>
@@ -145,11 +152,11 @@
                         use:link
                     >
                         <i class="ri-shield-user-line" aria-hidden="true" />
-                        <span class="txt">Manage superusers</span>
+                        <span class="txt">{$_("common.role.admin")}</span>
                     </a>
                     <button type="button" class="dropdown-item closable" role="menuitem" on:click={logout}>
                         <i class="ri-logout-circle-line" aria-hidden="true" />
-                        <span class="txt">Logout</span>
+                        <span class="txt">{$_("common.action.logout")}</span>
                     </button>
                 </Toggler>
             </div>

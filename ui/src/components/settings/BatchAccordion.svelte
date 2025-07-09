@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Accordion from "@/components/base/Accordion.svelte";
     import Field from "@/components/base/Field.svelte";
@@ -17,15 +18,15 @@
     <svelte:fragment slot="header">
         <div class="inline-flex">
             <i class="ri-archive-stack-line"></i>
-            <span class="txt">Batch API</span>
+            <span class="txt">{$_("page.setting.content.application.batch.title")}</span>
         </div>
 
         <div class="flex-fill" />
 
         {#if isEnabled}
-            <span class="label label-success">Enabled</span>
+            <span class="label label-success">{$_("common.tip.enabled")}</span>
         {:else}
-            <span class="label">Disabled</span>
+            <span class="label">{$_("common.tip.disabled")}</span>
         {/if}
 
         {#if hasErrors}
@@ -39,7 +40,9 @@
 
     <Field class="form-field form-field-toggle m-b-sm" name="batch.enabled" let:uniqueId>
         <input type="checkbox" id={uniqueId} bind:checked={formSettings.batch.enabled} />
-        <label for={uniqueId}>Enable <small class="txt-hint">(experimental)</small></label>
+        <label for={uniqueId}
+            >{$_("common.action.enable")} <small class="txt-hint">(experimental)</small></label
+        >
     </Field>
 
     <div class="grid">
@@ -69,7 +72,7 @@
         <div class="col-lg-4">
             <Field class="form-field {isEnabled ? 'required' : ''}" name="batch.timeout" let:uniqueId>
                 <label for={uniqueId}>
-                    <span class="txt">Max processing time (in seconds)</span>
+                    <span class="txt">{$_("page.setting.content.application.batch.requestTimeout")}</span>
                 </label>
                 <input
                     type="number"
@@ -84,13 +87,13 @@
 
         <div class="col-lg-4">
             <Field class="form-field" name="batch.maxBodySize" let:uniqueId>
-                <label for={uniqueId}>Max body size (in bytes)</label>
+                <label for={uniqueId}>{$_("page.setting.content.application.batch.requestBodySize")}</label>
                 <input
                     type="number"
                     id={uniqueId}
                     min="0"
                     step="1"
-                    placeholder="Default to 128MB"
+                    placeholder={$_("common.message.defaultValue", { values: { value: "128 MB" } })}
                     value={formSettings.batch.maxBodySize || ""}
                     on:input={(e) => (formSettings.batch.maxBodySize = e.target.value << 0)}
                 />

@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher } from "svelte";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -122,7 +123,7 @@
 <!-- svelte-ignore a11y-click-events-have-key-events -->
 <OverlayPanel bind:this={logPanel} class="overlay-panel-lg log-panel" on:hide={onHide}>
     <svelte:fragment slot="header">
-        <h4>Log details</h4>
+        <h4>{$_("common.popup.logSetting.logDetail")}</h4>
     </svelte:fragment>
 
     {#if isLoading}
@@ -170,7 +171,7 @@
                                     <CopyIcon value={log.message} />
                                 </div>
                             {:else}
-                                <span class="txt txt-hint">N/A</span>
+                                <span class="txt txt-hint">{$_("common.placeholder.cannotEdit")}</span>
                             {/if}
                         </td>
                     </tr>
@@ -185,7 +186,7 @@
                         </td>
                         <td>
                             {#if isEmpty}
-                                <span class="txt txt-hint">N/A</span>
+                                <span class="txt txt-hint">{$_("common.placeholder.cannotEdit")}</span>
                             {:else if isJson}
                                 <CodeBlock content={JSON.stringify(value, null, 2)} />
                             {:else if key == "error"}
@@ -214,12 +215,12 @@
 
     <svelte:fragment slot="footer">
         <button type="button" class="btn btn-transparent" on:click={() => hide()}>
-            <span class="txt">Close</span>
+            <span class="txt">{$_("common.action.close")}</span>
         </button>
 
         <button type="button" class="btn btn-primary" disabled={isLoading} on:click={() => downloadJson()}>
             <i class="ri-download-line" />
-            <span class="txt">Download as JSON</span>
+            <span class="txt">{$_("common.action.exportJson")}</span>
         </button>
     </svelte:fragment>
 </OverlayPanel>

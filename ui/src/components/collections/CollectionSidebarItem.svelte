@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import { activeCollection } from "@/stores/collections";
     import CommonHelper from "@/utils/CommonHelper";
@@ -43,9 +44,12 @@
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     <span
         class="btn btn-xs btn-circle btn-hint btn-transparent btn-pin-collection m-l-auto"
-        aria-label={"Pin collection"}
+        aria-label={$_("common.subfield.pin")+$_("common.database.table")}
         aria-hidden="true"
-        use:tooltip={{ position: "right", text: (isPinned ? "Unpin" : "Pin") + " collection" }}
+        use:tooltip={{
+            position: "right",
+            text: (isPinned ? $_("common.subfield.unPin") : $_("common.subfield.pin")) + $_("common.database.table"),
+        }}
         on:click|preventDefault|stopPropagation={() => toggleCollectionPin(collection)}
     >
         {#if isPinned}

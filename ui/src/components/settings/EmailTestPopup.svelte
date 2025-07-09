@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import Field from "@/components/base/Field.svelte";
     import OverlayPanel from "@/components/base/OverlayPanel.svelte";
     import ObjectSelect from "@/components/base/ObjectSelect.svelte";
@@ -15,11 +16,11 @@
     const testRequestKey = "email_test_request";
 
     const templateOptions = [
-        { label: "Verification", value: "verification" },
-        { label: "Password reset", value: "password-reset" },
-        { label: "Confirm email change", value: "email-change" },
-        { label: "OTP", value: "otp" },
-        { label: "Login alert", value: "login-alert" },
+        { label: $_("page.setting.content.smtp.content.3"), value: "verification" },
+        { label: $_("page.setting.content.smtp.content.4"), value: "password-reset" },
+        { label: $_("page.setting.content.smtp.content.5"), value: "email-change" },
+        { label: $_("page.setting.content.smtp.content.6"), value: "otp" },
+        { label: $_("page.setting.content.smtp.content.7"), value: "login-alert" },
     ];
 
     let panel;
@@ -70,15 +71,15 @@
         clearTimeout(testTimeoutId);
         testTimeoutId = setTimeout(() => {
             ApiClient.cancelRequest(testRequestKey);
-            addErrorToast("Test email send timeout.");
-        }, 30000);
+            addErrorToast($_("page.setting.content.smtp.content.9"));
+        }, 10000);
 
         try {
             await ApiClient.settings.testEmail(collectionIdOrName, email, template, {
                 $cancelKey: testRequestKey,
             });
 
-            addSuccessToast("Successfully sent test email.");
+            addSuccessToast($_("page.setting.content.smtp.content.8"));
             dispatch("submit");
             isSubmitting = false;
 
@@ -126,7 +127,7 @@
     on:hide
 >
     <svelte:fragment slot="header">
-        <h4 class="center txt-break">Send test email</h4>
+        <h4 class="center txt-break">{$_("common.action.sendTestEmail")}</h4>
     </svelte:fragment>
 
     <form id={formId} autocomplete="off" on:submit|preventDefault={() => submit()}>
@@ -162,7 +163,7 @@
         {/if}
 
         <Field class="form-field required m-0" name="email" let:uniqueId>
-            <label for={uniqueId}>To email address</label>
+            <label for={uniqueId}>{$_("page.setting.content.smtp.userEmail")}</label>
             <!-- svelte-ignore a11y-autofocus -->
             <input type="email" id={uniqueId} autofocus required bind:value={email} />
         </Field>
@@ -170,7 +171,7 @@
 
     <svelte:fragment slot="footer">
         <button type="button" class="btn btn-transparent" on:click={hide} disabled={isSubmitting}
-            >Close</button
+            >{$_("common.action.close")}</button
         >
         <button
             type="submit"
@@ -180,7 +181,7 @@
             disabled={!canSubmit || isSubmitting}
         >
             <i class="ri-mail-send-line" />
-            <span class="txt">Send</span>
+            <span class="txt">{$_("common.action.send")}</span>
         </button>
     </svelte:fragment>
 </OverlayPanel>

@@ -1,4 +1,5 @@
 <script>
+    import { _ } from 'svelte-i18n';
     import Scroller from "@/components/base/Scroller.svelte";
     import SortHeader from "@/components/base/SortHeader.svelte";
     import LogDate from "@/components/logs/LogDate.svelte";
@@ -364,7 +365,7 @@
             class:btn-disabled={isLoading}
             on:click={() => load(currentPage + 1)}
         >
-            <span class="txt">Load more</span>
+            <span class="txt">{$_("common.action.loadMore")}</span>
         </button>
     </div>
 {/if}
@@ -372,19 +373,18 @@
 {#if totalBulkSelected}
     <div class="bulkbar" transition:fly={{ duration: 150, y: 5 }}>
         <div class="txt">
-            Selected <strong>{totalBulkSelected}</strong>
-            {totalBulkSelected === 1 ? "log" : "logs"}
+            {$_("common.message.selectedPrompt", { values: { selected: totalBulkSelected } })}
         </div>
         <button
             type="button"
             class="btn btn-xs btn-transparent btn-outline p-l-5 p-r-5"
             on:click={() => deselectAllLogs()}
         >
-            <span class="txt">Reset</span>
+            <span class="txt">{$_("common.action.reset")}</span>
         </button>
         <div class="flex-fill" />
         <button type="button" class="btn btn-sm" on:click={downloadSelected}>
-            <span class="txt">Download as JSON</span>
+            <span class="txt">{$_("common.action.exportJson")}</span>
         </button>
     </div>
 {/if}

@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import CommonHelper from "@/utils/CommonHelper";
     import { createEventDispatcher, onMount } from "svelte";
     import { fly } from "svelte/transition";
@@ -7,7 +8,7 @@
     const uniqueId = "search_" + CommonHelper.randomString(7);
 
     export let value = "";
-    export let placeholder = 'Search term or filter like created > "2022-01-01"...';
+    export let placeholder = $_("common.placeholder.searchTeam");
 
     // autocomplete filter component fields
     export let autocompleteCollection = null;
@@ -89,7 +90,7 @@
             class="btn btn-expanded-sm btn-sm btn-warning"
             transition:fly={{ duration: 150, x: 5 }}
         >
-            <span class="txt">Search</span>
+            <span class="txt">{$_("common.action.search")}</span>
         </button>
     {/if}
 
@@ -103,7 +104,7 @@
                 submit();
             }}
         >
-            <span class="txt">Clear</span>
+            <span class="txt">{$_("common.action.clear")}</span>
         </button>
     {/if}
 </form>

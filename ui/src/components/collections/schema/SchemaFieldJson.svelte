@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import Field from "@/components/base/Field.svelte";
     import SchemaField from "@/components/collections/schema/SchemaField.svelte";
     import { slide } from "svelte/transition";
@@ -21,7 +22,7 @@
                 max={Number.MAX_SAFE_INTEGER}
                 value={field.maxSize || ""}
                 on:input={(e) => (field.maxSize = parseInt(e.target.value, 10))}
-                placeholder="Default to max ~1MB"
+                placeholder={$_("common.message.defaultValue", { values: { value: "max ~1MB" } })}
             />
         </Field>
 

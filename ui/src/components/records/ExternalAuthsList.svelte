@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import providersList from "@/providers.js";
     import { confirm } from "@/stores/confirmation";
     import { addSuccessToast } from "@/stores/toasts";
@@ -50,7 +51,9 @@
         }
 
         confirm(
-            `Do you really want to unlink the ${getProviderTitle(externalAuth.provider)} provider?`,
+            $_("common.message.unlinkProviderPrompt", {
+                values: { provider: getProviderTitle(externalAuth.provider) },
+            }),
             () => {
                 return ApiClient.collection("_externalAuths")
                     .delete(externalAuth.id)
@@ -98,5 +101,5 @@
         {/each}
     </div>
 {:else}
-    <h6 class="txt-hint txt-center m-t-sm m-b-sm">No linked OAuth2 providers.</h6>
+    <h6 class="txt-hint txt-center m-t-sm m-b-sm">{$_("common.message.noOa2Provider")}</h6>
 {/if}

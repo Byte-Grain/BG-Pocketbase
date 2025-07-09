@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher, tick } from "svelte";
     import { slide } from "svelte/transition";
     import { ClientResponseError } from "pocketbase";
@@ -281,7 +282,7 @@
                 result = await ApiClient.collection(collection.id).update(record.id, data);
             }
 
-            addSuccessToast(isNew ? "Successfully created record." : "Successfully updated record.");
+            addSuccessToast(isNew ? $_("common.message.createSuccess") : $_("common.message.updateSuccess"));
 
             deleteDraft();
 
@@ -316,7 +317,7 @@
             return; // nothing to delete
         }
 
-        confirm(`Do you really want to delete the selected record?`, () => {
+        confirm($_("common.message.deleteSelectedPrompt"), () => {
             return ApiClient.collection(original.collectionId)
                 .delete(original.id)
                 .then(() => {
@@ -414,12 +415,14 @@
         if (!collection?.id || !original?.email) {
             return;
         }
-
-        confirm(`Do you really want to sent verification email to ${original.email}?`, () => {
+        // 🐱复杂传参
+        confirm($_("common.popup.accountSetting.content.2", { values: { email: original.email } }), () => {
             return ApiClient.collection(collection.id)
                 .requestVerification(original.email)
                 .then(() => {
-                    addSuccessToast(`Successfully sent verification email to ${original.email}.`);
+                    addSuccessToast(
+                        $_("common.message.sendEmailSussess", { values: { email: original.email } }),
+                    );
                 })
                 .catch((err) => {
                     ApiClient.error(err);
@@ -431,12 +434,14 @@
         if (!collection?.id || !original?.email) {
             return;
         }
-
-        confirm(`Do you really want to sent password reset email to ${original.email}?`, () => {
+        // 🐱复杂动态传参示例
+        confirm($_("common.popup.accountSetting.content.3", { values: { email: original.email } }), () => {
             return ApiClient.collection(collection.id)
                 .requestPasswordReset(original.email)
                 .then(() => {
-                    addSuccessToast(`Successfully sent password reset email to ${original.email}.`);
+                    addSuccessToast(
+                        $_("common.message.sendEmailSussess", { values: { email: original.email } }),
+                    );
                 })
                 .catch((err) => {
                     ApiClient.error(err);
@@ -446,7 +451,7 @@
 
     function duplicateConfirm() {
         if (hasChanges) {
-            confirm("You have unsaved changes. Do you really want to discard them?", () => {
+            confirm($_("common.message.unsave"), () => {
                 duplicate();
             });
         } else {
@@ -488,7 +493,7 @@
 
     function copyJSON() {
         CommonHelper.copyToClipboard(JSON.stringify(original, null, 2));
-        addInfoToast("The record JSON was copied to your clipboard!", 3000);
+        addSuccessToast($_("common.message.copySuccess"), 3000);
     }
 </script>
 
@@ -504,7 +509,7 @@
     overlayClose={!isLoading}
     beforeHide={() => {
         if (hasChanges && confirmHide) {
-            confirm("You have unsaved changes. Do you really want to close the panel?", () => {
+            confirm($_("common.message.unsave"), () => {
                 forceHide();
             });
 
@@ -525,8 +530,9 @@
             <h4 class="panel-title txt-hint">Loading...</h4>
         {:else}
             <h4 class="panel-title">
-                {isNew ? "New" : "Edit"}
-                <strong>{collection?.name}</strong> record
+                {isNew ? $_("common.action.create") : $_("common.action.edit")}
+                <strong>{collection?.name}</strong>
+                {$_("common.database.data")}
             </h4>
 
             {#if !isNew}
@@ -547,7 +553,7 @@
                                 on:click={() => sendVerificationEmail()}
                             >
                                 <i class="ri-mail-check-line" aria-hidden="true" />
-                                <span class="txt">Send verification email</span>
+                                <span class="txt">{$_("common.action.sendVerificationEmail")}</span>
                             </button>
                         {/if}
                         {#if isAuthCollection && original.email}
@@ -558,7 +564,7 @@
                                 on:click={() => sendPasswordResetEmail()}
                             >
                                 <i class="ri-mail-lock-line" aria-hidden="true" />
-                                <span class="txt">Send password reset email</span>
+                                <span class="txt">{$_("common.action.sendResetEmail")}</span>
                             </button>
                         {/if}
                         {#if isAuthCollection}
@@ -569,7 +575,7 @@
                                 on:click={() => impersonatePopup?.show()}
                             >
                                 <i class="ri-id-card-line" aria-hidden="true" />
-                                <span class="txt">Impersonate</span>
+                                <span class="txt">{$_("common.popup.mockNewToken.name")}</span>
                             </button>
                         {/if}
                         <button
@@ -579,7 +585,7 @@
                             on:click={() => copyJSON()}
                         >
                             <i class="ri-braces-line" aria-hidden="true" />
-                            <span class="txt">Copy raw JSON</span>
+                            <span class="txt">{$_("common.action.copyJson")}</span>
                         </button>
                         <button
                             type="button"
@@ -588,7 +594,7 @@
                             on:click={() => duplicateConfirm()}
                         >
                             <i class="ri-file-copy-line" aria-hidden="true" />
-                            <span class="txt">Duplicate</span>
+                            <span class="txt">{$_("common.action.clone")}</span>
                         </button>
                         <hr />
                         <button
@@ -598,7 +604,7 @@
                             on:click|preventDefault|stopPropagation={() => deleteConfirm()}
                         >
                             <i class="ri-delete-bin-7-line" aria-hidden="true" />
-                            <span class="txt">Delete</span>
+                            <span class="txt">{$_("common.action.delete")}</span>
                         </button>
                     </Toggler>
                 </div>
@@ -613,7 +619,7 @@
                     class:active={activeTab === tabFormKey}
                     on:click={() => (activeTab = tabFormKey)}
                 >
-                    Account
+                    {$_("common.user.account")}
                 </button>
                 <button
                     type="button"
@@ -621,7 +627,7 @@
                     class:active={activeTab === tabProviderKey}
                     on:click={() => (activeTab = tabProviderKey)}
                 >
-                    Authorized providers
+                    {$_("common.placeholder.thirdPartyAuthorization")}
                 </button>
             </div>
         {/if}
@@ -644,13 +650,13 @@
                             <i class="ri-information-line" />
                         </div>
                         <div class="flex flex-gap-xs">
-                            The record has previous unsaved changes.
+                            {$_("common.message.recovery")}
                             <button
                                 type="button"
                                 class="btn btn-sm btn-secondary"
                                 on:click={() => restoreDraft()}
                             >
-                                Restore draft
+                                {$_("common.action.restore")}
                             </button>
                         </div>
                         <button
@@ -682,7 +688,7 @@
                     type="text"
                     id={uniqueId}
                     placeholder={!isLoading && !CommonHelper.isEmpty(idField?.autogeneratePattern)
-                        ? "Leave empty to auto generate..."
+                        ? $_("common.placeholder.autoGenerate")
                         : ""}
                     minlength={idField?.min || null}
                     maxlength={idField?.max || null}
@@ -751,21 +757,21 @@
             disabled={isSaving || isLoading}
             on:click={() => hide()}
         >
-            <span class="txt">Cancel</span>
+            <span class="txt">{$_("common.action.cancel")}</span>
         </button>
 
         <div class="btns-group no-gap">
             <button
                 type="submit"
                 form={formId}
-                title="Save and close"
+                title={$_("common.action.close")}
                 class="btn"
                 class:btn-expanded={isNew}
                 class:btn-expanded-sm={!isNew}
                 class:btn-loading={isSaving || isLoading}
                 disabled={!canSave || isSaving}
             >
-                <span class="txt">{isNew ? "Create" : "Save changes"}</span>
+                <span class="txt">{isNew ? $_("common.action.create") : $_("common.action.save")}</span>
             </button>
 
             {#if !isNew}
@@ -779,7 +785,7 @@
                             role="menuitem"
                             on:click={() => save(false)}
                         >
-                            <span class="txt">Save and continue</span>
+                            <span class="txt">{$_("common.action.saveAndContinue")}</span>
                         </button>
                     </Toggler>
                 </button>

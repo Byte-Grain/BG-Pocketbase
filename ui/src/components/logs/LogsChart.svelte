@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { onMount } from "svelte";
     import { scale } from "svelte/transition";
     import ApiClient from "@/utils/ApiClient";
@@ -91,7 +92,8 @@
             data: {
                 datasets: [
                     {
-                        label: "Total requests",
+                        // 🐱
+                        label: $_("common.placeholder.amountOfRequest"),
                         data: chartData,
                         borderColor: "#e34562",
                         pointBackgroundColor: "#e34562",
@@ -197,8 +199,7 @@
 
 <div class="chart-wrapper" class:loading={isLoading}>
     <div class="total-logs entrance-right" class:hidden={isLoading}>
-        Found {totalLogs}
-        {totalLogs == 1 ? "log" : "logs"}
+        {$_("common.database.amountOfData")}:{totalLogs}
     </div>
 
     {#if isLoading}

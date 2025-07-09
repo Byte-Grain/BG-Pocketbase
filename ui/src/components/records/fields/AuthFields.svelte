@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Field from "@/components/base/Field.svelte";
     import SecretGeneratorButton from "@/components/base/SecretGeneratorButton.svelte";
@@ -32,7 +33,7 @@
         <Field class="form-field {emailField?.required ? 'required' : ''}" name="email" let:uniqueId>
             <label for={uniqueId}>
                 <i class={CommonHelper.getFieldTypeIcon("email")} />
-                <span class="txt">email</span>
+                <span class="txt">{$_("common.user.email")}</span>
             </label>
 
             {#if !isSuperusers}
@@ -43,12 +44,16 @@
                             ? 'btn-success'
                             : 'btn-hint'}"
                         use:tooltip={{
-                            text: "Make email public or private",
+                            text: $_("common.placeholder.checkPublic"),
                             position: "top-right",
                         }}
                         on:click|preventDefault={() => (record.emailVisibility = !record.emailVisibility)}
                     >
-                        <span class="txt">Public: {record.emailVisibility ? "On" : "Off"}</span>
+                        <span class="txt">
+                            {record.emailVisibility
+                                ? $_("common.tip.public")
+                                : $_("common.tip.private")}</span
+                        >
                     </button>
                 </div>
             {/if}
@@ -69,7 +74,7 @@
         {#if !isNew}
             <Field class="form-field form-field-toggle" name="verified" let:uniqueId>
                 <input type="checkbox" id={uniqueId} bind:checked={changePasswordToggle} />
-                <label for={uniqueId}>Change password</label>
+                <label for={uniqueId}>{$_("common.action.changePassword")}</label>
             </Field>
         {/if}
 
@@ -80,7 +85,7 @@
                         <Field class="form-field required" name="password" let:uniqueId>
                             <label for={uniqueId}>
                                 <i class="ri-lock-line" />
-                                <span class="txt">Password</span>
+                                <span class="txt">{$_("common.user.passwordNew")}</span>
                             </label>
                             <input
                                 type="password"
@@ -98,7 +103,7 @@
                         <Field class="form-field required" name="passwordConfirm" let:uniqueId>
                             <label for={uniqueId}>
                                 <i class="ri-lock-line" />
-                                <span class="txt">Password confirm</span>
+                                <span class="txt">{$_("common.user.passwordConfirm")}</span>
                             </label>
                             <input
                                 type="password"
@@ -126,7 +131,7 @@
                             return; // no confirmation required
                         }
                         confirm(
-                            `Do you really want to manually change the verified account state?`,
+                            $_("common.message.updateVerificationPrompt"),
                             () => {},
                             () => {
                                 record.verified = !e.target.checked;
@@ -134,7 +139,7 @@
                         );
                     }}
                 />
-                <label for={uniqueId}>Verified</label>
+                <label for={uniqueId}>{$_("common.action.verified")}</label>
             </Field>
         </div>
     {/if}

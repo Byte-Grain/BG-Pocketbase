@@ -1,4 +1,6 @@
 <script>
+    import { _ } from "svelte-i18n";
+
     import { createEventDispatcher, tick } from "svelte";
     import ApiClient from "@/utils/ApiClient";
     import OverlayPanel from "@/components/base/OverlayPanel.svelte";
@@ -149,7 +151,7 @@
 
 <OverlayPanel bind:this={panel} class="confirm-changes-panel" popup on:hide on:show>
     <svelte:fragment slot="header">
-        <h4>Confirm collection changes</h4>
+        <h4>{$_("common.popup.editTable.placeholder.4",{values:{tableName:oldCollection.name}})}</h4>
     </svelte:fragment>
 
     {#if isCollectionRenamed || deletedFields.length || renamedFields.length}
@@ -158,12 +160,10 @@
                 <i class="ri-error-warning-line" />
             </div>
             <div class="content txt-bold">
-                <p>
-                    If any of the collection changes is part of another collection rule, filter or view query,
-                    you'll have to update it manually!
+                <p>{$_("common.popup.editTable.placeholder.5")}
                 </p>
                 {#if deletedFields.length}
-                    <p>All data associated with the removed fields will be permanently deleted!</p>
+                    <p>{$_("common.popup.editTable.placeholder.6")}</p>
                 {/if}
             </div>
         </div>
@@ -224,7 +224,7 @@
                     </small>
                     <br />
                     <small class="txt-mono txt-success">
-                        <strong>New</strong>:
+                        <strong>{$_("common.tip.new")}</strong>:
                         <span class="txt-preline">
                             {ruleChange.newRule === null
                                 ? "null (superusers only)"
@@ -260,7 +260,7 @@
     <svelte:fragment slot="footer">
         <!-- svelte-ignore a11y-autofocus -->
         <button autofocus type="button" class="btn btn-transparent" on:click={() => hide()}>
-            <span class="txt">Cancel</span>
+            <span class="txt">{$_("common.action.cancel")}</span>
         </button>
         <button type="button" class="btn btn-expanded" on:click={() => confirm()}>
             <span class="txt">Confirm</span>

@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher, onDestroy } from "svelte";
     import ApiClient from "@/utils/ApiClient";
     import tooltip from "@/actions/tooltip";
@@ -26,8 +27,7 @@
         }
 
         confirm(
-            `Note that we don't perform validations for the uploaded backup files. Proceed with caution and only if you trust the source.\n\n` +
-                `Do you really want to upload "${file.name}"?`,
+            $_("common.message.uploadReminder", { values: { fileName: file.name } }),
             () => {
                 upload(file);
             },
@@ -77,7 +77,7 @@
     class:btn-loading={isUploading}
     class:btn-disabled={isUploading}
     aria-label="Upload backup"
-    use:tooltip={"Upload backup"}
+    use:tooltip={$_("page.setting.content.backup.action.uploadBackup")}
     on:click={() => fileInput?.click()}
 >
     <i class="ri-upload-cloud-line" />

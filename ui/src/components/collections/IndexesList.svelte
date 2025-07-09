@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { scale } from "svelte/transition";
     import CommonHelper from "@/utils/CommonHelper";
     import tooltip from "@/actions/tooltip";
@@ -26,7 +27,7 @@
 </script>
 
 <div class="section-title">
-    Unique constraints and indexes ({collection?.indexes?.length || 0})
+    {$_("common.database.indexSetting")} ({collection?.indexes?.length || 0})
     {#if $errors?.indexes?.message}
         <i
             class="ri-error-warning-fill txt-danger"
@@ -45,7 +46,9 @@
             on:click={() => upsertPanel?.show(rawIndex, i)}
         >
             {#if parsed.unique}
-                <strong>Unique:</strong>
+                <strong>{$_("common.database.unique")}:</strong>
+            {:else}
+            <strong>{$_("common.database.index")}:</strong>
             {/if}
             <span class="txt">
                 {parsed.columns?.map((c) => c.name).join(", ")}
@@ -58,7 +61,7 @@
         on:click={() => upsertPanel?.show()}
     >
         <span class="txt">+</span>
-        <span class="txt">New index</span>
+        <span class="txt">{$_("common.action.create")}</span>
     </button>
 </div>
 

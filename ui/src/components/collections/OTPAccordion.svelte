@@ -1,4 +1,5 @@
 <script>
+    import { _ } from 'svelte-i18n';
     import tooltip from "@/actions/tooltip";
     import Accordion from "@/components/base/Accordion.svelte";
     import Field from "@/components/base/Field.svelte";
@@ -25,15 +26,15 @@
     <svelte:fragment slot="header">
         <div class="inline-flex">
             <i class="ri-time-line"></i>
-            <span class="txt">One-time password (OTP)</span>
+            <span class="txt">{$_("common.popup.authSetting.opt.name")}</span>
         </div>
 
         <div class="flex-fill" />
 
         {#if collection.otp.enabled}
-            <span class="label label-success">Enabled</span>
+            <span class="label label-success">{$_("common.action.enable")}</span>
         {:else}
-            <span class="label">Disabled</span>
+            <span class="label">{$_("common.tip.disabled")}</span>
         {/if}
 
         {#if hasErrors}
@@ -56,7 +57,7 @@
                 }
             }}
         />
-        <label for={uniqueId}>Enable</label>
+        <label for={uniqueId}>{$_("common.action.enable")}</label>
         {#if isSuperusers}
             <i
                 class="ri-information-line link-hint"

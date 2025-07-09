@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { link } from "svelte-spa-router";
     import ApiClient from "@/utils/ApiClient";
     import FullPage from "@/components/base/FullPage.svelte";
@@ -31,35 +32,35 @@
         <div class="alert alert-success">
             <div class="icon"><i class="ri-checkbox-circle-line" /></div>
             <div class="content">
-                <p>Check <strong class="txt-nowrap">{email}</strong> for the recovery link.</p>
+                <p>{$_("page.forget.content.2", { values: { email: email } })}</p>
             </div>
         </div>
     {:else}
         <form class="m-b-base" on:submit|preventDefault={submit}>
             <div class="content txt-center m-b-sm">
-                <h4 class="m-b-xs">Forgotten superuser password</h4>
-                <p>Enter the email associated with your account and we’ll send you a recovery link:</p>
+                <h4 class="m-b-xs">{$_("page.forget.title")}</h4>
+                <p>{$_("page.forget.content.1")}</p>
             </div>
 
             <Field class="form-field required" name="email" let:uniqueId>
-                <label for={uniqueId}>Email</label>
+                <label for={uniqueId}>{$_("common.user.email")}</label>
                 <!-- svelte-ignore a11y-autofocus -->
                 <input type="email" id={uniqueId} required autofocus bind:value={email} />
             </Field>
 
             <button
                 type="submit"
-                class="btn btn-lg btn-block"
+                class="btn btn-lg btn-block full-width"
                 class:btn-loading={isLoading}
                 disabled={isLoading}
             >
                 <i class="ri-mail-send-line" />
-                <span class="txt">Send recovery link</span>
+                <span class="txt">{$_("common.action.sendResetEmail")}</span>
             </button>
         </form>
     {/if}
 
     <div class="content txt-center">
-        <a href="/login" class="link-hint" use:link>Back to login</a>
+        <a href="/login" class="link-hint" use:link>{$_("common.action.goToLogin")}</a>
     </div>
 </FullPage>

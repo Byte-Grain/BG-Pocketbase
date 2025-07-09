@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -151,7 +152,7 @@
                                 class="txt-ellipsis {isDeleted
                                     ? 'txt-strikethrough link-hint'
                                     : 'link-primary'}"
-                                title="Download"
+                                title={$_("common.action.download")}
                                 on:auxclick={() => openInNewTab(filename)}
                                 on:click={() => openInNewTab(filename)}
                             >
@@ -166,7 +167,7 @@
                                     class="btn btn-sm btn-danger btn-transparent"
                                     on:click={() => restoreExistingFile(filename)}
                                 >
-                                    <span class="txt">Restore</span>
+                                    <span class="txt">{$_("common.action.restore")}</span>
                                 </button>
                             {:else}
                                 <button
@@ -197,7 +198,7 @@
                             <UploadedFilePreview {file} />
                         </figure>
                         <div class="filename m-r-auto" title={file.name}>
-                            <small class="label label-success m-r-5">New</small>
+                            <small class="label label-success m-r-5">{$_("common.tip.new")}</small>
                             <span class="txt">{file.name}</span>
                         </div>
                         <button
@@ -234,7 +235,7 @@
                     on:click={() => fileInput?.click()}
                 >
                     <i class="ri-upload-cloud-line" />
-                    <span class="txt">Upload new file</span>
+                    <span class="txt">{$_("common.action.uploadImage")}</span>
                 </button>
             </div>
         </div>

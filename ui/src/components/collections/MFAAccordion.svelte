@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { scale } from "svelte/transition";
     import CommonHelper from "@/utils/CommonHelper";
     import tooltip from "@/actions/tooltip";
@@ -16,15 +17,15 @@
     <svelte:fragment slot="header">
         <div class="inline-flex">
             <i class="ri-shield-check-line"></i>
-            <span class="txt"> Multi-factor authentication (MFA) </span>
+            <span class="txt">{$_("common.popup.authSetting.mfa.name")}</span>
         </div>
 
         <div class="flex-fill" />
 
         {#if collection.mfa.enabled}
-            <span class="label label-success">Enabled</span>
+            <span class="label label-success">{$_("common.action.enable")}</span>
         {:else}
-            <span class="label">Disabled</span>
+            <span class="label">{$_("common.tip.disabled")}</span>
         {/if}
 
         {#if hasErrors}
@@ -57,7 +58,7 @@
         <Field class="form-field form-field-toggle" name="mfa.enabled" let:uniqueId>
             <input type="checkbox" id={uniqueId} bind:checked={collection.mfa.enabled} />
             <label for={uniqueId}>
-                <span class="txt">Enable</span>
+                <span class="txt">{$_("common.action.enable")}</span>
             </label>
         </Field>
 
@@ -67,7 +68,7 @@
                 formKey="mfa.rule"
                 superuserToggle={false}
                 disabled={!collection.mfa.enabled}
-                placeholder="Leave empty to require MFA for everyone"
+                placeholder={$_("common.placeholder.defaultSetMfa")}
                 {collection}
                 bind:rule={collection.mfa.rule}
             >

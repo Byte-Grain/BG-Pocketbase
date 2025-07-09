@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import CommonHelper from "@/utils/CommonHelper";
     import CodeBlock from "@/components/base/CodeBlock.svelte";
     import FieldsQueryParam from "@/components/collections/docs/FieldsQueryParam.svelte";
@@ -47,20 +48,20 @@
     </div>
 </div>
 
-<div class="section-title">Body Parameters</div>
+<div class="section-title">{$_("common.placeholder.apiParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="50%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="50%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
         <tr>
             <td>
                 <div class="inline-flex">
-                    <span class="label label-success">Required</span>
+                    <span class="label label-success">{$_("common.tip.required")}</span>
                     <span>otpId</span>
                 </div>
             </td>
@@ -72,7 +73,7 @@
         <tr>
             <td>
                 <div class="inline-flex">
-                    <span class="label label-success">Required</span>
+                    <span class="label label-success">{$_("common.tip.required")}</span>
                     <span>password</span>
                 </div>
             </td>

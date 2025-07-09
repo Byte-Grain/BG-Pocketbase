@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
     import { pageTitle } from "@/stores/app";
@@ -7,7 +8,7 @@
     import Field from "@/components/base/Field.svelte";
     import SettingsSidebar from "@/components/settings/SettingsSidebar.svelte";
 
-    $pageTitle = "Export collections";
+    $pageTitle = $_("common.action.export");
 
     const uniqueId = "export_" + CommonHelper.randomString(5);
 
@@ -58,7 +59,7 @@
 
     function copy() {
         CommonHelper.copyToClipboard(schema);
-        addInfoToast("The configuration was copied to your clipboard!", 3000);
+        addInfoToast($_("common.message.copySuccess"), 3000);
     }
 
     function toggleSelectAll() {
@@ -97,7 +98,7 @@
 <PageWrapper>
     <header class="page-header">
         <nav class="breadcrumbs">
-            <div class="breadcrumb-item">Settings</div>
+            <div class="breadcrumb-item">{$_("common.menu.setting")}</div>
             <div class="breadcrumb-item">{$pageTitle}</div>
         </nav>
     </header>
@@ -109,8 +110,7 @@
             {:else}
                 <div class="content txt-xl m-b-base">
                     <p>
-                        Below you'll find your current collections configuration that you could import in
-                        another PocketBase environment.
+                        {$_("page.setting.content.sync.export.title")}
                     </p>
                 </div>
 
@@ -183,7 +183,7 @@
                         on:click={() => download()}
                     >
                         <i class="ri-download-line" />
-                        <span class="txt">Download as JSON</span>
+                        <span class="txt">{$_("common.action.exportJson")}</span>
                     </button>
                 </div>
             {/if}

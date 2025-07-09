@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Field from "@/components/base/Field.svelte";
     import SchemaField from "@/components/collections/schema/SchemaField.svelte";
@@ -13,10 +14,10 @@
             <div class="col-sm-6">
                 <Field class="form-field" name="fields.{key}.min" let:uniqueId>
                     <label for={uniqueId}>
-                        <span class="txt">Min length</span>
+                        <span class="txt">{$_("common.input.minLength.name")}</span>
                         <i
                             class="ri-information-line link-hint"
-                            use:tooltip={"Clear the field or set it to 0 for no limit."}
+                            use:tooltip={$_("common.input.minLength.tip")}
                         />
                     </label>
                     <input
@@ -35,10 +36,10 @@
             <div class="col-sm-6">
                 <Field class="form-field" name="fields.{key}.max" let:uniqueId>
                     <label for={uniqueId}>
-                        <span class="txt">Max length</span>
+                        <span class="txt">{$_("common.input.maxLength.name")}</span>
                         <i
                             class="ri-information-line link-hint"
-                            use:tooltip={"Clear the field or set it to 0 to fallback to the default limit."}
+                            use:tooltip={$_("common.input.maxLength.tip")}
                         />
                     </label>
                     <input
@@ -75,10 +76,10 @@
             <div class="col-sm-6">
                 <Field class="form-field" name="fields.{key}.autogeneratePattern" let:uniqueId>
                     <label for={uniqueId}>
-                        <span class="txt">Autogenerate pattern</span>
+                        <span class="txt">{$_("common.input.autoGeneratePattern.name")}</span>
                         <i
                             class="ri-information-line link-hint"
-                            use:tooltip={"Set and autogenerate text matching the pattern on missing record create value."}
+                            use:tooltip={$_("common.input.autoGeneratePattern.tip")}
                         />
                     </label>
                     <input type="text" id={uniqueId} bind:value={field.autogeneratePattern} />

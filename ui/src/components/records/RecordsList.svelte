@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher } from "svelte";
     import { fly } from "svelte/transition";
     import ApiClient from "@/utils/ApiClient";
@@ -257,9 +258,7 @@
     }
 
     function deleteSelectedConfirm() {
-        const msg = `Do you really want to delete the selected ${
-            totalBulkSelected === 1 ? "record" : "records"
-        }?`;
+        const msg = $_("common.message.deleteSelectedPrompt");
 
         confirm(msg, deleteSelected);
     }
@@ -305,7 +304,7 @@
                 class="dropdown dropdown-right dropdown-nowrap columns-dropdown"
                 trigger={columnsTrigger}
             >
-                <div class="txt-hint txt-sm p-5 m-b-5">Toggle columns</div>
+                <div class="txt-hint txt-sm p-5 m-b-5">{$_("common.placeholder.displayedField")}</div>
                 {#each collumnsToHide as column (column.id + column.name)}
                     <Field class="form-field form-field-sm form-field-toggle m-0 p-5" let:uniqueId>
                         <input
@@ -430,7 +429,7 @@
                 {:else}
                     <tr>
                         <td colspan="99" class="txt-center txt-hint p-xs">
-                            <h6>No records found.</h6>
+                            <h6>{$_("common.message.notFountData")}</h6>
                             {#if filter?.length}
                                 <button
                                     type="button"
@@ -446,7 +445,7 @@
                                     on:click={() => dispatch("new")}
                                 >
                                     <i class="ri-add-line" />
-                                    <span class="txt">New record</span>
+                                    <span class="txt">{$_("common.action.newData")}</span>
                                 </button>
                             {/if}
                         </td>
@@ -463,7 +462,7 @@
                             class:btn-loading={isLoading}
                             on:click|preventDefault={() => load(currentPage + 1)}
                         >
-                            <span class="txt">Load more</span>
+                            <span class="txt">{$_("page.log.adminLog")}</span>
                         </button>
                     </td>
                 </tr>
@@ -475,8 +474,7 @@
 {#if totalBulkSelected}
     <div class="bulkbar" transition:fly={{ duration: 150, y: 5 }}>
         <div class="txt">
-            Selected <strong>{totalBulkSelected}</strong>
-            {totalBulkSelected === 1 ? "record" : "records"}
+            {$_("common.message.selectedPrompt", { values: { selected: totalBulkSelected } })}
         </div>
         <button
             type="button"
@@ -484,7 +482,7 @@
             class:btn-disabled={isDeleting}
             on:click={() => deselectAllRecords()}
         >
-            <span class="txt">Reset</span>
+            <span class="txt">{$_("common.action.reset")}</span>
         </button>
         <div class="flex-fill" />
         <button
@@ -494,7 +492,7 @@
             class:btn-disabled={isDeleting}
             on:click={() => deleteSelectedConfirm()}
         >
-            <span class="txt">Delete selected</span>
+            <span class="txt">{$_("common.action.deleteSelected")}</span>
         </button>
     </div>
 {/if}

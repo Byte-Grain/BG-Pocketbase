@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import scrollend from "@/actions/scrollend";
     import tooltip from "@/actions/tooltip";
     import Draggable from "@/components/base/Draggable.svelte";
@@ -250,7 +251,7 @@
 <OverlayPanel bind:this={pickerPanel} popup class="overlay-panel-xl" on:hide on:show {...$$restProps}>
     <svelte:fragment slot="header">
         <h4>
-            Select <strong>{collection?.name || ""}</strong> records
+            {$_("common.popup.picker.name", { values: { tableName: collection?.name || "" } })}
         </h4>
     </svelte:fragment>
 
@@ -266,7 +267,7 @@
                 class="btn btn-pill btn-transparent btn-hint p-l-xs p-r-xs"
                 on:click={() => upsertPanel?.show()}
             >
-                <div class="txt">New record</div>
+                <div class="txt">{$_("common.action.newData")}</div>
             </button>
         {/if}
     </div>
@@ -316,7 +317,7 @@
                         <button
                             type="button"
                             class="btn btn-sm btn-circle btn-transparent btn-hint m-l-auto"
-                            use:tooltip={"Edit"}
+                            use:tooltip={$_("common.action.edit")}
                             on:keydown|stopPropagation
                             on:click|stopPropagation={() => upsertPanel?.show(record.id)}
                         >
@@ -328,10 +329,10 @@
         {:else}
             {#if !isLoading}
                 <div class="list-item">
-                    <span class="txt txt-hint">No records found.</span>
+                    <span class="txt txt-hint">{$_("common.popup.picker.content.1")}</span>
                     {#if filter?.length}
                         <button type="button" class="btn btn-hint btn-sm" on:click={() => (filter = "")}>
-                            <span class="txt">Clear filters</span>
+                            <span class="txt">{$_("common.action.clear")}</span>
                         </button>
                     {/if}
                 </div>
@@ -348,7 +349,7 @@
     </div>
 
     <h5 class="section-title">
-        Selected
+        {$_("common.placeholder.selected")}
         {#if maxSelect > 1}
             ({selected.length} of MAX {maxSelect})
         {/if}
@@ -358,11 +359,7 @@
             {#each selected as record, i}
                 <Draggable bind:list={selected} index={i} let:dragging let:dragover>
                     <span class="label" class:label-danger={dragging} class:label-warning={dragover}>
-                        {#if isReloadingRecord[record.id]}
-                            <span class="loader loader-xs active"></span>
-                        {:else}
-                            <RecordInfo {record} />
-                        {/if}
+                        <RecordInfo {record} />
                         <button
                             type="button"
                             title="Remove"
@@ -376,15 +373,15 @@
             {/each}
         </div>
     {:else}
-        <p class="txt-hint">No selected records.</p>
+        <p class="txt-hint">{$_("common.popup.picker.content.2")}</p>
     {/if}
 
     <svelte:fragment slot="footer">
         <button type="button" class="btn btn-transparent" on:click={() => hide()}>
-            <span class="txt">Cancel</span>
+            <span class="txt">{$_("common.action.cancel")}</span>
         </button>
         <button type="button" class="btn" on:click={() => save()}>
-            <span class="txt">Set selection</span>
+            <span class="txt">{$_("common.action.save")}</span>
         </button>
     </svelte:fragment>
 </OverlayPanel>

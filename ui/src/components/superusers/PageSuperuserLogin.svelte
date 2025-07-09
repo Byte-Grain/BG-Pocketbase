@@ -1,4 +1,6 @@
 <script>
+    import { _ } from "svelte-i18n";
+    import { onMount } from "svelte";
     import { link, replace, querystring } from "svelte-spa-router";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -6,7 +8,7 @@
     import Field from "@/components/base/Field.svelte";
     import { setErrors } from "@/stores/errors";
     import { addErrorToast, removeAllToasts } from "@/stores/toasts";
-
+    import { setUrlPopup } from "@/utils/Cookie";
     const queryParams = new URLSearchParams($querystring);
 
     let identity = queryParams.get("demoEmail") || "";
@@ -153,17 +155,21 @@
 <FullPage>
     <div class="content txt-center m-b-base">
         <h4>
-            Superuser login
+            {$_("page.login.title")}
             {#if totalSteps > 1}
                 ({currentStep}/{totalSteps})
             {/if}
         </h4>
     </div>
-
+    <!-- 🐱服务连接失败时弹出 -->
     {#if isLoading}
+        {$_("common.message.loadTimeout")}
         <div class="block txt-center">
             <span class="loader" />
         </div>
+        <button type="button" class="btn btn-setting-loading" on:click={setUrlPopup}>
+            <i class="ri-settings-4-line" id="icon-setting" />
+        </button>
     {:else if authMethods.password.enabled && !mfaId}
         <!-- auth with password -->
         <form class="block" on:submit|preventDefault={authWithPassword}>
@@ -174,6 +180,7 @@
                 <!-- svelte-ignore a11y-autofocus -->
                 <input
                     id={uniqueId}
+                    autocomplete="username"
                     type={authMethods.password.identityFields.length == 1 &&
                     authMethods.password.identityFields[0] == "email"
                         ? "email"
@@ -188,32 +195,45 @@
             </Field>
 
             <Field class="form-field required" name="password" let:uniqueId>
-                <label for={uniqueId}>Password</label>
-                <input type="password" id={uniqueId} bind:value={password} required />
+                <label for={uniqueId}>{$_("common.user.password")}</label>
+                <input
+                    autocomplete="current-password"
+                    type="password"
+                    id={uniqueId}
+                    bind:value={password}
+                    required
+                />
                 <div class="help-block">
-                    <a href="/request-password-reset" class="link-hint" use:link>Forgotten password?</a>
+                    <a href="/request-password-reset" class="link-hint" use:link
+                        >{$_("page.login.action.forgetPsw")}</a
+                    >
                 </div>
             </Field>
-
-            <button
-                type="submit"
-                class="btn btn-lg btn-block btn-next"
-                class:btn-disabled={passwordAuthSubmitting}
-                class:btn-loading={passwordAuthSubmitting}
-            >
-                <span class="txt">{totalSteps > 1 ? "Next" : "Login"}</span>
-                <i class="ri-arrow-right-line" />
-            </button>
+            <div class="flex">
+                <button type="button" class="btn btn-lg btn-login-setting" on:click={setUrlPopup}>
+                    <i class="ri-settings-4-line" id="icon-setting" />
+                </button>
+                <button
+                    type="submit"
+                    class="btn btn-lg btn-block btn-next btn-login"
+                    class:btn-disabled={passwordAuthSubmitting}
+                    class:btn-loading={passwordAuthSubmitting}
+                >
+                    <span class="txt"
+                        >{totalSteps > 1 ? $_("common.action.next") : $_("common.action.login")}</span
+                    >
+                    <i class="ri-arrow-right-line" id="icon-setting" />
+                </button>
+            </div>
         </form>
     {:else if authMethods.otp.enabled}
         {#if !otpId}
             <!-- request otp -->
             <form class="block" on:submit|preventDefault={requestOTP}>
                 <Field class="form-field required" name="email" let:uniqueId>
-                    <label for={uniqueId}>Email</label>
+                    <label for={uniqueId}>{$_("common.user.email")}</label>
                     <input type="email" id={uniqueId} bind:value={otpEmail} required />
                 </Field>
-
                 <button
                     type="submit"
                     class="btn btn-lg btn-block btn-next"
@@ -233,7 +253,6 @@
                     </p>
                 </div>
             {/if}
-
             <!-- auth with otp -->
             <form class="block" on:submit|preventDefault={authWithOTP}>
                 <Field class="form-field required" name="otpId" let:uniqueId>
@@ -250,24 +269,21 @@
                         required
                     />
                 </Field>
-
                 <Field class="form-field required" name="password" let:uniqueId>
-                    <label for={uniqueId}>One-time password</label>
+                    <label for={uniqueId}>{$_("common.popup.authSetting.opt.name")}</label>
                     <!-- svelte-ignore a11y-autofocus -->
                     <input type="password" id={uniqueId} bind:value={otpPassword} required autofocus />
                 </Field>
-
                 <button
                     type="submit"
                     class="btn btn-lg btn-block btn-next"
                     class:btn-disabled={otpAuthSubmitting}
                     class:btn-loading={otpAuthSubmitting}
                 >
-                    <span class="txt">Login</span>
-                    <i class="ri-arrow-right-line" />
+                    <span class="txt">{$_("common.page.login")}</span>
+                    <i class="ri-settings-4-line" />
                 </button>
             </form>
-
             <div class="content txt-center m-t-sm">
                 <button
                     type="button"

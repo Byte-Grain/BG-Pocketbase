@@ -104,14 +104,14 @@ export default [
         logo: "vk.svg"
     },
     {
-        key:   "notion",
+        key: "notion",
         title: "Notion",
-        logo:  "notion.svg",
+        logo: "notion.svg",
     },
     {
-        key:   "monday",
+        key: "monday",
         title: "monday.com",
-        logo:  "monday.svg",
+        logo: "monday.svg",
     },
     {
         key: "spotify",

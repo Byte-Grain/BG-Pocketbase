@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Field from "@/components/base/Field.svelte";
     import OverlayPanel from "@/components/base/OverlayPanel.svelte";
@@ -89,7 +90,7 @@
 
 <OverlayPanel bind:this={panel} popup on:hide on:show {...$$restProps}>
     <svelte:fragment slot="header">
-        <h4>{original ? "Update" : "Create"} index</h4>
+        <h4>{$_("common.database.indexSetting")}</h4>
     </svelte:fragment>
 
     <Field class="form-field form-field-toggle m-b-sm" let:uniqueId>
@@ -103,7 +104,7 @@
                 index = CommonHelper.buildIndex(indexParts);
             }}
         />
-        <label for={uniqueId}>Unique</label>
+        <label for={uniqueId}>{$_("common.database.unique")}</label>
     </Field>
 
     <Field class="form-field required m-b-sm" name={`indexes.${key || ""}`} let:uniqueId>
@@ -123,7 +124,7 @@
 
     {#if presetColumns.length > 0}
         <div class="inline-flex gap-10">
-            <span class="txt txt-hint">Presets</span>
+            <span class="txt txt-hint">{$_("common.action.check")}{$_("common.database.field")}:</span>
             {#each presetColumns as column}
                 <button
                     type="button"
@@ -142,14 +143,14 @@
             <button
                 type="button"
                 class="btn btn-sm btn-circle btn-hint btn-transparent m-r-auto"
-                use:tooltip={{ text: "Delete", position: "top" }}
+                use:tooltip={{ text: $_("common.action.delete"), position: "top" }}
                 on:click={() => remove()}
             >
                 <i class="ri-delete-bin-7-line" />
             </button>
         {/if}
         <button type="button" class="btn btn-transparent" on:click={() => hide()}>
-            <span class="txt">Cancel</span>
+            <span class="txt">{$_("common.action.cancel")}</span>
         </button>
         <button
             type="button"
@@ -157,7 +158,7 @@
             class:btn-disabled={indexColumns.length <= 0}
             on:click={() => submit()}
         >
-            <span class="txt">Set index</span>
+            <span class="txt">{$_("common.action.save")}</span>
         </button>
     </svelte:fragment>
 </OverlayPanel>

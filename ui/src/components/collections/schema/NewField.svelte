@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import Toggler from "@/components/base/Toggler.svelte";
     import CommonHelper from "@/utils/CommonHelper";
     import { createEventDispatcher } from "svelte";
@@ -10,62 +11,62 @@
 
     const types = [
         {
-            label: "Plain text",
+            label: $_("common.database.fieldPreset.string"),
             value: "text",
             icon: CommonHelper.getFieldTypeIcon("text"),
         },
         {
-            label: "Rich editor",
+            label: $_("common.database.fieldPreset.editor"),
             value: "editor",
             icon: CommonHelper.getFieldTypeIcon("editor"),
         },
         {
-            label: "Number",
+            label: $_("common.database.fieldPreset.number"),
             value: "number",
             icon: CommonHelper.getFieldTypeIcon("number"),
         },
         {
-            label: "Bool",
+            label: $_("common.database.fieldPreset.bool"),
             value: "bool",
             icon: CommonHelper.getFieldTypeIcon("bool"),
         },
         {
-            label: "Email",
+            label: $_("common.database.fieldPreset.email"),
             value: "email",
             icon: CommonHelper.getFieldTypeIcon("email"),
         },
         {
-            label: "URL",
+            label: $_("common.database.fieldPreset.url"),
             value: "url",
             icon: CommonHelper.getFieldTypeIcon("url"),
         },
         {
-            label: "Datetime",
+            label: $_("common.database.fieldPreset.datetime"),
             value: "date",
             icon: CommonHelper.getFieldTypeIcon("date"),
         },
         {
-            label: "Autodate",
+            label: $_("common.database.fieldPreset.autoDate"),
             value: "autodate",
-            icon: CommonHelper.getFieldTypeIcon("autodate"),
+            icon: CommonHelper.getFieldTypeIcon("autoDdate"),
         },
         {
-            label: "Select",
+            label: $_("common.database.fieldPreset.select"),
             value: "select",
             icon: CommonHelper.getFieldTypeIcon("select"),
         },
         {
-            label: "File",
+            label: $_("common.database.fieldPreset.file"),
             value: "file",
             icon: CommonHelper.getFieldTypeIcon("file"),
         },
         {
-            label: "Relation",
+            label: $_("common.database.fieldPreset.relation"),
             value: "relation",
             icon: CommonHelper.getFieldTypeIcon("relation"),
         },
         {
-            label: "JSON",
+            label: $_("common.database.fieldPreset.json"),
             value: "json",
             icon: CommonHelper.getFieldTypeIcon("json"),
         },
@@ -88,7 +89,7 @@
 
 <div tabindex="0" role="button" class="field-types-btn {classes}">
     <i class="ri-add-line" aria-hidden="true" />
-    <div class="txt">New field</div>
+    <div class="txt">{$_("common.database.createPresetField")}</div>
     <Toggler class="dropdown field-types-dropdown">
         {#each types as item}
             <button type="button" role="menuitem" class="dropdown-item" on:click={() => select(item.value)}>

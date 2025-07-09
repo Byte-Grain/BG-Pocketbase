@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import PreviewPopup from "@/components/base/PreviewPopup.svelte";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -46,7 +47,7 @@
         type="button"
         draggable={false}
         class="handle thumb {size ? `thumb-${size}` : ''}"
-        title={(hasPreview ? "Preview" : "Download") + " " + filename}
+        title={(hasPreview ? $_("common.action.preview") : $_("common.action.download")) + " " + filename}
         on:click|stopPropagation={async () => {
             if (!hasPreview) {
                 return;

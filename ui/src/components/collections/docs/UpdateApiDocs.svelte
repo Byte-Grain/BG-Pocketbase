@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import CodeBlock from "@/components/base/CodeBlock.svelte";
     import FieldsQueryParam from "@/components/collections/docs/FieldsQueryParam.svelte";
     import SdkTabs from "@/components/base/SdkTabs.svelte";
@@ -33,7 +34,7 @@
             body: `
                 {
                   "status": 400,
-                  "message": "Failed to update record.",
+                  "message": "${$_("common.message.updateError")}",
                   "data": {
                     "${collection?.fields?.[0]?.name}": {
                       "code": "validation_required",
@@ -80,9 +81,11 @@
     }
 </script>
 
-<h3 class="m-b-sm">Update ({collection.name})</h3>
+<h3 class="m-b-sm">
+    {$_("common.popup.apiDocs.updateDataApi.name")}
+</h3>
 <div class="content txt-lg m-b-sm">
-    <p>Update a single <strong>{collection.name}</strong> record.</p>
+    <p>{$_("common.popup.apiDocs.updateDataApi.content.1", { values: { tableName: collection.name } })}</p>
     <p>
         Body parameters could be sent as <code>application/json</code> or
         <code>multipart/form-data</code>.
@@ -91,7 +94,7 @@
         File upload is supported only via <code>multipart/form-data</code>.
         <br />
         For more info and examples you could check the detailed
-        <a href={import.meta.env.PB_FILE_UPLOAD_DOCS} target="_blank" rel="noopener noreferrer">
+        <a href="https://pocketbase.io/docs/files-handling/" target="_blank" rel="noopener noreferrer">
             Files upload and handling docs
         </a>.
     </p>
@@ -134,7 +137,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
     `}
 />
 
-<h6 class="m-b-xs">API details</h6>
+<h6 class="m-b-xs">{$_("common.placeholder.apiUrl")}</h6>
 <div class="alert alert-warning">
     <strong class="label label-primary">PATCH</strong>
     <div class="content">
@@ -147,13 +150,13 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
     {/if}
 </div>
 
-<div class="section-title">Path parameters</div>
+<div class="section-title">{$_("common.placeholder.apiPathParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="60%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="60%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
@@ -167,24 +170,24 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
     </tbody>
 </table>
 
-<div class="section-title">Body Parameters</div>
+<div class="section-title">{$_("common.placeholder.apiParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="50%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="50%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
         {#if isAuth}
             <tr>
-                <td colspan="3" class="txt-hint txt-bold">Auth specific fields</td>
+                <td colspan="3" class="txt-hint txt-bold">{$_("common.placeholder.forAuth")}</td>
             </tr>
             <tr>
                 <td>
                     <div class="inline-flex">
-                        <span class="label label-warning">Optional</span>
+                        <span class="label label-warning">{$_("common.tip.optional")}</span>
                         <span>email</span>
                     </div>
                 </td>
@@ -203,9 +206,9 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
                 <td>
                     <div class="inline-flex">
                         {#if collection?.fields?.find((f) => f.name == "emailVisibility")?.required}
-                            <span class="label label-success">Required</span>
+                            <span class="label label-success">{$_("common.tip.required")}</span>
                         {:else}
-                            <span class="label label-warning">Optional</span>
+                            <span class="label label-warning">{$_("common.tip.optional")}</span>
                         {/if}
                         <span>emailVisibility</span>
                     </div>
@@ -218,7 +221,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
             <tr>
                 <td>
                     <div class="inline-flex">
-                        <span class="label label-warning">Optional</span>
+                        <span class="label label-warning">{$_("common.tip.optional")}</span>
                         <span>oldPassword</span>
                     </div>
                 </td>
@@ -235,7 +238,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
             <tr>
                 <td>
                     <div class="inline-flex">
-                        <span class="label label-warning">Optional</span>
+                        <span class="label label-warning">{$_("common.tip.optional")}</span>
                         <span>password</span>
                     </div>
                 </td>
@@ -247,7 +250,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
             <tr>
                 <td>
                     <div class="inline-flex">
-                        <span class="label label-warning">Optional</span>
+                        <span class="label label-warning">{$_("common.tip.optional")}</span>
                         <span>passwordConfirm</span>
                     </div>
                 </td>
@@ -259,7 +262,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
             <tr>
                 <td>
                     <div class="inline-flex">
-                        <span class="label label-warning">Optional</span>
+                        <span class="label label-warning">{$_("common.tip.optional")}</span>
                         <span>verified</span>
                     </div>
                 </td>
@@ -273,7 +276,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
                 </td>
             </tr>
             <tr>
-                <td colspan="3" class="txt-hint txt-bold">Other fields</td>
+                <td colspan="3" class="txt-hint txt-bold">{$_("common.placeholder.forOther")}</td>
             </tr>
         {/if}
 
@@ -282,9 +285,9 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
                 <td>
                     <div class="inline-flex">
                         {#if field.required}
-                            <span class="label label-success">Required</span>
+                            <span class="label label-success">{$_("common.tip.required")}</span>
                         {:else}
-                            <span class="label label-warning">Optional</span>
+                            <span class="label label-warning">{$_("common.tip.optional")}</span>
                         {/if}
                         <span>{field.name}</span>
                     </div>
@@ -317,13 +320,13 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
     </tbody>
 </table>
 
-<div class="section-title">Query parameters</div>
+<div class="section-title">{$_("common.placeholder.apiQueryParameters")}</div>
 <table class="table-compact table-border m-b-lg">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="60%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="60%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
@@ -345,7 +348,7 @@ final record = await pb.collection('${collection?.name}').update('RECORD_ID', bo
     </tbody>
 </table>
 
-<div class="section-title">Responses</div>
+<div class="section-title">{$_("common.placeholder.apiResponses")}</div>
 <div class="tabs">
     <div class="tabs-header compact combined left">
         {#each responses as response (response.code)}

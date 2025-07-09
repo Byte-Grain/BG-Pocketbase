@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { tick } from "svelte";
     import { replace } from "svelte-spa-router";
     import { getTokenPayload } from "pocketbase";
@@ -93,8 +94,7 @@
         }
 
         confirm(
-            `Note that we don't perform validations for the uploaded backup files. Proceed with caution and only if you trust the file source.\n\n` +
-                `Do you really want to upload and initialize "${file.name}"?`,
+            $_("common.message.uploadReminder", { values: { fileName: file.name } }),
             () => {
                 uploadBackup(file);
             },
@@ -142,11 +142,11 @@
 <FullPage>
     <form class="block" autocomplete="off" on:submit|preventDefault={submit}>
         <div class="content txt-center m-b-base">
-            <h4>Create your first superuser account in order to continue</h4>
+            <h4>{$_("page.init.title")}</h4>
         </div>
 
         <Field class="form-field required" name="email" let:uniqueId>
-            <label for={uniqueId}>Email</label>
+            <label for={uniqueId}>{$_("common.user.email")}</label>
             <input
                 bind:this={emailInput}
                 type="email"
@@ -159,7 +159,7 @@
         </Field>
 
         <Field class="form-field required" name="password" let:uniqueId>
-            <label for={uniqueId}>Password</label>
+            <label for={uniqueId}>{$_("common.user.password")}</label>
             <input
                 type="password"
                 autocomplete="new-password"
@@ -169,11 +169,11 @@
                 bind:value={password}
                 required
             />
-            <div class="help-block">Recommended at least 10 characters.</div>
+            <div class="help-block">{$_("page.init.content.2")}</div>
         </Field>
 
         <Field class="form-field required" name="passwordConfirm" let:uniqueId>
-            <label for={uniqueId}>Password confirm</label>
+            <label for={uniqueId}>{$_("common.user.passwordConfirm")}</label>
             <input
                 type="password"
                 minlength="10"
@@ -190,7 +190,7 @@
             class:btn-disabled={isBusy}
             class:btn-loading={isLoading}
         >
-            <span class="txt">Create superuser and login</span>
+            <span class="txt">{$_("page.init.action.newUser")}</span>
             <i class="ri-arrow-right-line" />
         </button>
     </form>
@@ -206,7 +206,7 @@
         class:btn-loading={isUploading}
     >
         <i class="ri-upload-cloud-line" />
-        <span class="txt">Or initialize from backup</span>
+        <span class="txt">{$_("page.setting.content.backup.action.uploadBackup")}</span>
     </label>
     <input
         bind:this={backupFileInput}

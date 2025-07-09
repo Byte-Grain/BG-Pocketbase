@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher } from "svelte";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
@@ -68,7 +69,7 @@
     on:hide
 >
     <svelte:fragment slot="header">
-        <h4>Impersonate auth token</h4>
+        <h4>{$_("common.popup.mockNewToken.name")}</h4>
     </svelte:fragment>
 
     <div class="clearfix"></div>
@@ -106,8 +107,9 @@
         <form id={formId} on:submit|preventDefault={submit}>
             <div class="content">
                 <p>
-                    Generate a non-refreshable auth token for
-                    <strong>{CommonHelper.displayValue(record)}:</strong>
+                    {$_("common.popup.mockNewToken.content.1", {
+                        values: { email: CommonHelper.displayValue(record) },
+                    })}
                 </p>
             </div>
 
@@ -116,7 +118,9 @@
                 <input
                     type="number"
                     id={uniqueId}
-                    placeholder="Default to the collection setting ({collection?.authToken?.duration || 0}s)"
+                    placeholder={$_("common.message.defaultValue", {
+                        values: { value: collection?.authToken?.duration || 0 + "s" },
+                    })}
                     min="0"
                     step="1"
                     value={duration || ""}
@@ -128,7 +132,7 @@
 
     <svelte:fragment slot="footer">
         <button type="button" class="btn btn-transparent" on:click={hide} disabled={isSubmitting}>
-            <span class="txt">Close</span>
+            <span class="txt">{$_("common.action.close")}</span>
         </button>
         {#if impersonateClient?.authStore?.token}
             <button

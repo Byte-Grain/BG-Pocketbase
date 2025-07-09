@@ -1,4 +1,6 @@
 <script>
+    import { _ } from "svelte-i18n";
+    import { getCookie, setCookie } from "@/utils/Cookie";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
     import tooltip from "@/actions/tooltip";
@@ -12,8 +14,7 @@
     import TrustedProxyAccordion from "@/components/settings/TrustedProxyAccordion.svelte";
     import RateLimitAccordion from "@/components/settings/RateLimitAccordion.svelte";
 
-    $pageTitle = "Application settings";
-
+    $pageTitle = $_("common.menu.appConfig");;
     let originalFormSettings = {};
     let formSettings = {};
     let isLoading = false;
@@ -65,9 +66,12 @@
 
             await loadHealthData();
 
+            // 🐱在存入后端数据库后，额外设置页面的cookie
+            setCookie("pbUrl", formSettings.meta.appURL);
+
             setErrors({});
 
-            addSuccessToast("Successfully saved application settings.");
+            addSuccessToast($_("common.message.applyNewSetting"));
         } catch (err) {
             ApiClient.error(err);
         }
@@ -173,8 +177,8 @@
 <PageWrapper>
     <header class="page-header">
         <nav class="breadcrumbs">
-            <div class="breadcrumb-item">Settings</div>
-            <div class="breadcrumb-item">Application</div>
+            <div class="breadcrumb-item">{$_("common.menu.setting")}</div>
+            <div class="breadcrumb-item">{$_("common.menu.appConfig")}</div>
         </nav>
     </header>
 
@@ -186,7 +190,7 @@
                 <div class="grid">
                     <div class="col-lg-6">
                         <Field class="form-field required" name="meta.appName" let:uniqueId>
-                            <label for={uniqueId}>Application name</label>
+                            <label for={uniqueId}>{$_("page.setting.content.application.nowAppName")}</label>
                             <input
                                 type="text"
                                 id={uniqueId}
@@ -198,7 +202,7 @@
 
                     <div class="col-lg-6">
                         <Field class="form-field required" name="meta.appURL" let:uniqueId>
-                            <label for={uniqueId}>Application URL</label>
+                            <label for={uniqueId}>{$_("page.setting.content.application.serverUrl")}</label>
                             <input type="text" id={uniqueId} required bind:value={formSettings.meta.appURL} />
                         </Field>
                     </div>
@@ -217,11 +221,13 @@
                                 bind:checked={formSettings.meta.hideControls}
                             />
                             <label for={uniqueId}>
-                                <span class="txt">Hide collection create and edit controls</span>
+                                <span class="txt"
+                                    >{$_("page.setting.content.application.action.hideEditControl")}</span
+                                >
                                 <i
                                     class="ri-information-line link-hint"
                                     use:tooltip={{
-                                        text: `This could prevent making accidental schema changes when in production environment.`,
+                                        text: $_("common.tip.envPrevention"),
                                         position: "right",
                                     }}
                                 />
@@ -240,7 +246,7 @@
                             disabled={isSaving}
                             on:click={() => reset()}
                         >
-                            <span class="txt">Cancel</span>
+                            <span class="txt">{$_("common.action.cancel")}</span>
                         </button>
                     {/if}
 
@@ -251,7 +257,7 @@
                         disabled={!hasChanges || isSaving}
                         on:click={() => save()}
                     >
-                        <span class="txt">Save changes</span>
+                        <span class="txt">{$_("common.action.save")}</span>
                     </button>
                 </div>
             {/if}

@@ -3,6 +3,7 @@
 </script>
 
 <script>
+    import { _ } from "svelte-i18n";
     import tooltip from "@/actions/tooltip";
     import Field from "@/components/base/Field.svelte";
     import Toggler from "@/components/base/Toggler.svelte";
@@ -17,8 +18,8 @@
 
     const customRequiredLabels = {
         // type => label
-        bool: "Nonfalsey",
-        number: "Nonzero",
+        bool: $_("common.tip.nonfalsey"),
+        number: $_("common.switch.nonempty.name"),
     };
 
     // @todo refactor once the UI is dynamic
@@ -59,7 +60,7 @@
 
     $: hasErrors = !CommonHelper.isEmpty(CommonHelper.getNestedVal($errors, `fields.${key}`));
 
-    $: requiredLabel = customRequiredLabels[field?.type] || "Nonempty";
+    $: requiredLabel = customRequiredLabels[field?.type] || $_("common.switch.nonempty.name");
 
     function remove() {
         if (!field.id) {
@@ -154,7 +155,7 @@
                     <span class="label label-success">{requiredLabel}</span>
                 {/if}
                 {#if field.hidden}
-                    <span class="label label-danger">Hidden</span>
+                    <span class="label label-danger">{$_("common.switch.setPrivate.name")}</span>
                 {/if}
             </div>
 
@@ -175,7 +176,7 @@
                 required
                 disabled={!interactive || field.system}
                 spellcheck="false"
-                placeholder="Field name"
+                placeholder={$_("common.placeholder.fieldName")}
                 value={field.name}
                 title="System field"
                 on:input={(e) => {
@@ -196,8 +197,8 @@
             <button
                 type="button"
                 class="btn btn-sm btn-circle btn-success btn-transparent options-trigger"
-                aria-label="Restore"
-                use:tooltip={"Restore"}
+                aria-label={$_("common.action.restore")}
+                use:tooltip={$_("common.action.restore")}
                 on:click={restore}
             >
                 <i class="ri-restart-line" />
@@ -235,9 +236,7 @@
                             <i
                                 class="ri-information-line link-hint"
                                 use:tooltip={{
-                                    text: `Requires the field value NOT to be ${CommonHelper.zeroDefaultStr(
-                                        field,
-                                    )}.`,
+                                    text: $_("common.switch.nonempty.tip"),
                                 }}
                             />
                         </label>
@@ -257,11 +256,11 @@
                             }}
                         />
                         <label for={uniqueId}>
-                            <span class="txt">Hidden</span>
+                            <span class="txt">{$_("common.switch.setPrivate.name")}</span>
                             <i
                                 class="ri-information-line link-hint"
                                 use:tooltip={{
-                                    text: `Hide from the JSON API response and filters.`,
+                                    text: $_("common.switch.setPrivate.tip"),
                                 }}
                             />
                         </label>
@@ -277,11 +276,11 @@
                             disabled={field.hidden}
                         />
                         <label for={uniqueId}>
-                            <span class="txt">Presentable</span>
+                            <span class="txt">{$_("common.switch.presentable.name")}</span>
                             <i
                                 class="ri-information-line {field.hidden ? 'txt-disabled' : 'link-hint'}"
                                 use:tooltip={{
-                                    text: `Whether the field should be preferred in the Superuser UI relation listings (default to auto).`,
+                                    text: $_("common.switch.presentable.tip"),
                                 }}
                             />
                         </label>
@@ -309,7 +308,7 @@
                                         role="menuitem"
                                         on:click|preventDefault={duplicate}
                                     >
-                                        <span class="txt">Duplicate</span>
+                                        <span class="txt">{$_("common.action.clone")}</span>
                                     </button>
                                     {#if !field.system}
                                         <button
@@ -318,7 +317,7 @@
                                             role="menuitem"
                                             on:click|preventDefault={remove}
                                         >
-                                            <span class="txt">Remove</span>
+                                            <span class="txt">{$_("common.action.delete")}</span>
                                         </button>
                                     {/if}
                                 </Toggler>

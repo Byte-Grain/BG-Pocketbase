@@ -1,16 +1,17 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { slide } from "svelte/transition";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
     import { pageTitle } from "@/stores/app";
     import { setErrors } from "@/stores/errors";
-    import { removeAllToasts, addSuccessToast } from "@/stores/toasts";
+    import { removeAllToasts, addWarningToast, addSuccessToast } from "@/stores/toasts";
     import tooltip from "@/actions/tooltip";
     import PageWrapper from "@/components/base/PageWrapper.svelte";
     import SettingsSidebar from "@/components/settings/SettingsSidebar.svelte";
     import S3Fields from "@/components/settings/S3Fields.svelte";
 
-    $pageTitle = "Files storage";
+    $pageTitle = $_("common.menu.storageConfig");
 
     const testRequestKey = "s3_test_request";
 
@@ -56,7 +57,11 @@
 
             removeAllToasts();
 
-            addSuccessToast("Successfully saved storage settings.");
+            if (testError) {
+                addWarningToast("Successfully saved but failed to establish S3 connection.");
+            } else {
+                addSuccessToast("Successfully saved files storage settings.");
+            }
         } catch (err) {
             ApiClient.error(err);
         }
@@ -82,7 +87,7 @@
 <PageWrapper>
     <header class="page-header">
         <nav class="breadcrumbs">
-            <div class="breadcrumb-item">Settings</div>
+            <div class="breadcrumb-item">{$_("common.menu.setting")}</div>
             <div class="breadcrumb-item">{$pageTitle}</div>
         </nav>
     </header>
@@ -90,7 +95,7 @@
     <div class="wrapper">
         <form class="panel" autocomplete="off" on:submit|preventDefault={() => save()}>
             <div class="content txt-xl m-b-base">
-                <p>By default PocketBase uses the local file system to store uploaded files.</p>
+                <p>{$_("page.setting.content.fileStorage.content.1")}</p>
                 <p>
                     If you have limited disk space, you could optionally connect to an S3 compatible storage.
                 </p>
@@ -100,7 +105,7 @@
                 <div class="loader" />
             {:else}
                 <S3Fields
-                    toggleLabel="Use S3 storage"
+                    toggleLabel={$_("page.setting.content.fileStorage.action.s3Enable")}
                     originalConfig={originalFormSettings.s3}
                     bind:config={formSettings.s3}
                     bind:isTesting
@@ -113,21 +118,9 @@
                                     <i class="ri-error-warning-line" />
                                 </div>
                                 <div class="content">
-                                    If you have existing uploaded files, you'll have to migrate them manually
-                                    from the
-                                    <strong>
-                                        {originalFormSettings.s3?.enabled
-                                            ? "S3 storage"
-                                            : "local file system"}
-                                    </strong>
-                                    to the
-                                    <strong
-                                        >{formSettings.s3.enabled
-                                            ? "S3 storage"
-                                            : "local file system"}</strong
-                                    >.
+                                    {$_("page.setting.content.fileStorage.content.2")}
                                     <br />
-                                    There are numerous command line tools that can help you, such as:
+                                    {$_("page.setting.content.fileStorage.content.3")}
                                     <a
                                         href="https://github.com/rclone/rclone"
                                         target="_blank"
@@ -135,7 +128,8 @@
                                         class="txt-bold"
                                     >
                                         rclone
-                                    </a>,
+                                    </a>
+                                    /
                                     <a
                                         href="https://github.com/peak/s5cmd"
                                         target="_blank"
@@ -143,7 +137,7 @@
                                         class="txt-bold"
                                     >
                                         s5cmd
-                                    </a>, etc.
+                                    </a> / etc
                                 </div>
                             </div>
                             <div class="clearfix m-t-base" />
@@ -180,7 +174,7 @@
                             disabled={isSaving}
                             on:click={() => reset()}
                         >
-                            <span class="txt">Reset</span>
+                            <span class="txt">{$_("common.action.reset")}</span>
                         </button>
                     {/if}
 
@@ -191,7 +185,7 @@
                         disabled={!hasChanges || isSaving}
                         on:click={() => save()}
                     >
-                        <span class="txt">Save changes</span>
+                        <span class="txt">{$_("common.action.save")}</span>
                     </button>
                 </div>
             {/if}

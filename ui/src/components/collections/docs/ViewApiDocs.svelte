@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import ApiClient from "@/utils/ApiClient";
     import CommonHelper from "@/utils/CommonHelper";
     import CodeBlock from "@/components/base/CodeBlock.svelte";
@@ -48,7 +49,7 @@
 
 <h3 class="m-b-sm">View ({collection.name})</h3>
 <div class="content txt-lg m-b-sm">
-    <p>Fetch a single <strong>{collection.name}</strong> record.</p>
+    <p>{$_("common.popup.apiDocs.getViewApi.content.1", { values: { tableName: collection.name } })}</p>
 </div>
 
 <SdkTabs
@@ -89,13 +90,13 @@
     {/if}
 </div>
 
-<div class="section-title">Path Parameters</div>
+<div class="section-title">{$_("common.placeholder.apiPathParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="60%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="60%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
@@ -109,13 +110,13 @@
     </tbody>
 </table>
 
-<div class="section-title">Query parameters</div>
+<div class="section-title">{$_("common.placeholder.apiQueryParameters")}</div>
 <table class="table-compact table-border m-b-base">
     <thead>
         <tr>
-            <th>Param</th>
-            <th>Type</th>
-            <th width="60%">Description</th>
+            <th>{$_("common.placeholder.params")}</th>
+            <th>{$_("common.placeholder.type")}</th>
+            <th width="60%">{$_("common.placeholder.description")}</th>
         </tr>
     </thead>
     <tbody>
@@ -138,7 +139,7 @@
     </tbody>
 </table>
 
-<div class="section-title">Responses</div>
+<div class="section-title">{$_("common.placeholder.apiResponses")}</div>
 <div class="tabs">
     <div class="tabs-header compact combined left">
         {#each responses as response (response.code)}

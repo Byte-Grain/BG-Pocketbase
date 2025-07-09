@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { scale } from "svelte/transition";
     import tooltip from "@/actions/tooltip";
     import Accordion from "@/components/base/Accordion.svelte";
@@ -56,15 +57,15 @@
     <svelte:fragment slot="header">
         <div class="inline-flex">
             <i class="ri-lock-password-line"></i>
-            <span class="txt">Identity/Password</span>
+            <span class="txt">{$_("common.popup.authSetting.passwordLoginSetting.name")}"</span>
         </div>
 
         <div class="flex-fill" />
 
         {#if collection.passwordAuth.enabled}
-            <span class="label label-success">Enabled</span>
+            <span class="label label-success">{$_("common.tip.enabled")}</span>
         {:else}
-            <span class="label">Disabled</span>
+            <span class="label">{$_("common.tip.disabled")}</span>
         {/if}
 
         {#if hasErrors}
@@ -83,7 +84,7 @@
             bind:checked={collection.passwordAuth.enabled}
             disabled={isSuperusers}
         />
-        <label for={uniqueId}>Enable</label>
+        <label for={uniqueId}>{$_("common.action.enable")}</label>
         {#if isSuperusers}
             <i
                 class="ri-information-line link-hint"
@@ -97,7 +98,7 @@
 
     <Field class="form-field required m-0" name="passwordAuth.identityFields" let:uniqueId>
         <label for={uniqueId}>
-            <span class="txt">Unique identity fields</span>
+            <span class="txt">{$_("common.popup.authSetting.passwordLoginSetting.input.authFields")}</span>
         </label>
         <ObjectSelect
             items={identityFieldsOptions}

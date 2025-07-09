@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { onMount } from "svelte";
     import { slide } from "svelte/transition";
     import ApiClient from "@/utils/ApiClient";
@@ -69,7 +70,7 @@
     }
 
     function deleteConfirm(name) {
-        confirm(`Do you really want to delete ${name}?`, () => deleteBackup(name));
+        confirm($_("common.message.deletePrompt", { values: { value: name } }), () => deleteBackup(name));
     }
 
     async function deleteBackup(name) {
@@ -83,7 +84,7 @@
             await ApiClient.backups.delete(name);
             CommonHelper.removeByKey(backups, "name", name);
             loadBackups();
-            addSuccessToast(`Successfully deleted ${name}.`);
+            addSuccessToast($_("common.message.deleteDataSuccess", { values: { name: name } }));
         } catch (err) {
             if (!err.isAbort) {
                 ApiClient.error(err);
@@ -143,7 +144,7 @@
                             class:btn-loading={isDownloading[backup.key]}
                             disabled={isDeleting[backup.key] || isDownloading[backup.key]}
                             aria-label="Download"
-                            use:tooltip={"Download"}
+                            use:tooltip={$_("common.action.download")}
                             on:click|preventDefault={() => download(backup.key)}
                         >
                             <i class="ri-download-line" />
@@ -153,7 +154,7 @@
                             class="btn btn-sm btn-circle btn-hint btn-transparent"
                             disabled={isDeleting[backup.key]}
                             aria-label="Restore"
-                            use:tooltip={"Restore"}
+                            use:tooltip={$_("common.action.restore")}
                             on:click|preventDefault={() => restorePanel.show(backup.key)}
                         >
                             <i class="ri-restart-line" />
@@ -164,7 +165,7 @@
                             class:btn-loading={isDeleting[backup.key]}
                             disabled={isDeleting[backup.key]}
                             aria-label="Delete"
-                            use:tooltip={"Delete"}
+                            use:tooltip={$_("common.action.delete")}
                             on:click|preventDefault={() => deleteConfirm(backup.key)}
                         >
                             <i class="ri-delete-bin-7-line" />
@@ -173,7 +174,7 @@
                 </div>
             {:else}
                 <div class="list-item list-item-placeholder">
-                    <span class="txt">No backups yet.</span>
+                    <span class="txt">{$_("page.setting.content.backup.content.2")}</span>
                 </div>
             {/each}
         {/if}
@@ -188,10 +189,10 @@
         >
             {#if canBackup}
                 <i class="ri-play-circle-line" />
-                <span class="txt">Initialize new backup</span>
+                <span class="txt">{$_("page.setting.content.backup.action.createBackup")}</span>
             {:else}
                 <span class="loader loader-sm" />
-                <span class="txt">Backup/restore operation is in process</span>
+                <span class="txt">{$_("page.setting.content.backup.content.6")}</span>
             {/if}
         </button>
     </div>

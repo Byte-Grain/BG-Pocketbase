@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { scale } from "svelte/transition";
     import tooltip from "@/actions/tooltip";
     import CommonHelper from "@/utils/CommonHelper";
@@ -13,9 +14,9 @@
     export let formSettings;
 
     const audienceOptions = [
-        { value: "", label: "All" },
-        { value: "@guest", label: "Guest only" },
-        { value: "@auth", label: "Auth only" },
+        { value: "", label: $_("common.role.guest") },
+        { value: "@guest", label: $_("common.role.user") },
+        { value: "@auth", label: $_("common.role.authUser") },
     ];
 
     const basePredefinedTags = [
@@ -128,7 +129,7 @@
     <svelte:fragment slot="header">
         <div class="inline-flex">
             <i class="ri-pulse-fill"></i>
-            <span class="txt">Rate limiting</span>
+            <span class="txt">{$_("page.setting.content.application.rate.title")}</span>
         </div>
 
         <div class="flex-fill" />
@@ -142,25 +143,27 @@
         {/if}
 
         {#if formSettings.rateLimits.enabled}
-            <span class="label label-success">Enabled</span>
+            <span class="label label-success">{$_("common.tip.enabled")}</span>
         {:else}
-            <span class="label">Disabled</span>
+            <span class="label">{$_("common.tip.disabled")}</span>
         {/if}
     </svelte:fragment>
 
     <Field class="form-field form-field-toggle m-b-xs" name="rateLimits.enabled" let:uniqueId>
         <input type="checkbox" id={uniqueId} bind:checked={formSettings.rateLimits.enabled} />
-        <label for={uniqueId}>Enable <small class="txt-hint">(experimental)</small></label>
+        <label for={uniqueId}
+            >{$_("common.action.enable")} <small class="txt-hint">(experimental)</small></label
+        >
     </Field>
 
     {#if !CommonHelper.isEmpty(formSettings.rateLimits.rules)}
         <table class="rate-limit-table">
             <thead>
                 <tr>
-                    <th class="col-label">Rate limit label</th>
-                    <th class="col-requests">Max requests<br /><small>(per IP)</small></th>
-                    <th class="col-duration">Interval<br /><small>(in seconds)</small></th>
-                    <th class="col-audience">Targeted users</th>
+                    <th class="col-label">{$_("page.setting.content.application.rate.route")}</th>
+                    <th class="col-requests">{$_("page.setting.content.application.rate.maximum")}</th>
+                    <th class="col-duration">{$_("page.setting.content.application.rate.intervalTime")}</th>
+                    <th class="col-audience">{$_("page.setting.content.application.rate.roleToLimit")}</th>
                     <th></th>
                 </tr>
             </thead>
@@ -249,11 +252,11 @@
             on:click={() => newRule()}
         >
             <i class="ri-add-line"></i>
-            <span class="txt">Add rate limit rule</span>
+            <span class="txt">{$_("page.setting.content.application.rate.action.addRule")}</span>
         </button>
 
         <button type="button" class="txt-nowrap txt-sm link-hint" on:click={() => formatInfoPanel?.show()}>
-            <em>Learn more about the rate limit rules</em>
+            <em>{$_("common.action.learnMore")}</em>
         </button>
     </div>
 </Accordion>
@@ -330,7 +333,7 @@
 
     <svelte:fragment slot="footer">
         <button type="button" class="btn btn-transparent" on:click={() => formatInfoPanel?.hide()}>
-            Close
+            {$_("common.action.close")}
         </button>
     </svelte:fragment>
 </OverlayPanel>

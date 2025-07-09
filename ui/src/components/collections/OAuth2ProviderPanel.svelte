@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import { createEventDispatcher } from "svelte";
     import CommonHelper from "@/utils/CommonHelper";
     import tooltip from "@/actions/tooltip";
@@ -46,13 +47,10 @@
     }
 
     async function remove() {
-        confirm(
-            `Do you really want to remove the "${uiOptions.title}" OAuth2 provider from the collection?`,
-            () => {
-                dispatch("remove", { uiOptions });
-                hide();
-            },
-        );
+        confirm($_("common.message.deleteTablePrompt", { values: { value: uiOptions.title } }), () => {
+            dispatch("remove", { uiOptions });
+            hide();
+        });
     }
 </script>
 
@@ -107,7 +105,8 @@
             </button>
             <div class="flex-fill"></div>
         {/if}
-        <button type="button" class="btn btn-transparent" on:click={hide}>Cancel</button>
+        <button type="button" class="btn btn-transparent" on:click={hide}>{$_("common.action.cancel")}</button
+        >
         <button type="submit" form={formId} class="btn btn-expanded" disabled={!hasChanges}>
             <span class="txt">Set provider config</span>
         </button>

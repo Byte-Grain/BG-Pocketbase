@@ -1,4 +1,5 @@
 <script>
+    import { _ } from "svelte-i18n";
     import Field from "@/components/base/Field.svelte";
     import PageWrapper from "@/components/base/PageWrapper.svelte";
     import ImportPopup from "@/components/settings/ImportPopup.svelte";
@@ -10,7 +11,7 @@
     import CommonHelper from "@/utils/CommonHelper";
     import { tick } from "svelte";
 
-    $pageTitle = "Import collections";
+    $pageTitle = $_("common.action.import");
 
     let fileInput;
     let importPopup;
@@ -255,7 +256,7 @@
 <PageWrapper>
     <header class="page-header">
         <nav class="breadcrumbs">
-            <div class="breadcrumb-item">Settings</div>
+            <div class="breadcrumb-item">{$_("common.menu.setting")}</div>
             <div class="breadcrumb-item">{$pageTitle}</div>
         </nav>
     </header>
@@ -279,7 +280,7 @@
 
                 <div class="content txt-xl m-b-base">
                     <p>
-                        Paste below the collections configuration you want to import or
+                        {$_("page.setting.content.sync.import.title")}
                         <button
                             class="btn btn-outline btn-sm m-l-5"
                             class:btn-loading={isLoadingFile}
@@ -287,13 +288,13 @@
                                 fileInput.click();
                             }}
                         >
-                            <span class="txt">Load from JSON file</span>
+                            <span class="txt">{$_("common.action.importJson")}</span>
                         </button>
                     </p>
                 </div>
 
                 <Field class="form-field {!isValid ? 'field-error' : ''}" name="collections" let:uniqueId>
-                    <label for={uniqueId} class="p-b-10">Collections</label>
+                    <label for={uniqueId} class="p-b-10">{$_("common.menu.collection")}</label>
                     <textarea
                         id={uniqueId}
                         class="code"
@@ -423,7 +424,7 @@
                 <div class="flex m-t-base">
                     {#if !!schemas}
                         <button type="button" class="btn btn-transparent link-hint" on:click={() => clear()}>
-                            <span class="txt">Clear</span>
+                            <span class="txt">{$_("common.action.clear")}</span>
                         </button>
                     {/if}
                     <div class="flex-fill" />
@@ -433,7 +434,7 @@
                         disabled={!canImport}
                         on:click={review}
                     >
-                        <span class="txt">Review</span>
+                        <span class="txt">{$_("common.action.review")}</span>
                     </button>
                 </div>
             {/if}
